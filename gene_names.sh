@@ -2,7 +2,6 @@
 
 PMC=PMC4574564
 
-
 screen_pmc(){
 
 GENELIST_DIR='genelists/'
@@ -18,8 +17,9 @@ cat tmp.html | grep -i xls | tr '"' "\n" | egrep -i '(xls$|xlsx$)' | sort -u > t
 
 COUNT=$(cat tmp.txt | wc -l)
 
-# run 1 file
 for XLS in $(cat tmp.txt ) ; do
+
+  echo $PMC $XLS | tee -a $RES
 
   ERR_CNT=0
 
@@ -31,8 +31,10 @@ for XLS in $(cat tmp.txt ) ; do
 
   sleep 2
 
-  ssconvert -S --export-type Gnumeric_stf:stf_assistant -O 'separator="'$'\t''"' \
-    $MYFILE $MYFILE.txt 2> /dev/null
+  #ssconvert -S --export-type Gnumeric_stf:stf_assistant -O 'separator="'$'\t''"' \
+  #  $MYFILE $MYFILE.txt 2> /dev/null
+
+  Rscript read_xls.R $MYFILE 2> /dev/null
 
   #count the columns in each sheet
   for SHEET in $MYFILE.txt* ; do
@@ -66,19 +68,23 @@ for XLS in $(cat tmp.txt ) ; do
         fi
       fi
     done
+    rm $SHEET
+    rm *tmp
   done
 done
 rm tmp*
-sleep 5
+sleep 10
 }
 export -f screen_pmc
 
 rm tmp*
 >results.txt
-screen_pmc PMC4574564
 
+#screen_pmc PMC4574564
 
-
-for PMC in $(head -10 pmc2015.txt) ; do
+>begin
+screen_pmc $PMC
+for PMC in $(head -1000 pmc2015.txt ) ; do
   screen_pmc $PMC
 done
+>finish
