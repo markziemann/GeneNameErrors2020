@@ -5,10 +5,11 @@ read_excel_allsheets <- function(filename, tibble = FALSE) {
     # but if you like tidyverse tibbles (the default with read_excel)
     # then just pass tibble = TRUE
     sheets <- readxl::excel_sheets(filename)
-    x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X))
-    if(!tibble) x <- lapply(x, as.data.frame)
-    names(x) <- sheets
-    x
+    x <- lapply(sheets, function(X)
+      readxl::read_excel(filename, sheet = X, col_types="text"))  
+      if(!tibble) x <- lapply(x, as.data.frame)
+      names(x) <- sheets
+      x
 }
 
 args = commandArgs(trailingOnly=TRUE)
