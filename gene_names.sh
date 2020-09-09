@@ -164,7 +164,7 @@ rm tmp*
 
 >begin
 screen_pmc $PMC
-for PMC in $(head -1000 pmc2015.txt ) ; do
+for PMC in $(cat pmc2015.txt ) ; do
   screen_pmc $PMC
 done
 >finish
