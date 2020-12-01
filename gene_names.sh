@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# This is the main script for scanning xls files for gene name errors.
+
+# testing
 #set -x
 #PMC=PMC4574564 #XLS
 #PMC=PMC6364112 #ZIP
@@ -158,6 +162,7 @@ export -f screen_pmc
 rm tmp*
 >results.txt
 
+# testing only
 #screen_pmc PMC3592415
 #screen_pmc PMC4574564
 #screen_pmc PMC6364112

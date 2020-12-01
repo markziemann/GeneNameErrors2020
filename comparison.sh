@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script is designed to compare the performance of
+# ssconvert and read_xls approaches to finding gene name errors
+
 for XLS in *xlsx ; do
 
   cp $XLS tmp.xlsx

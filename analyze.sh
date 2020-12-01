@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script is designed to provide a progress summary of scanning results
+
 RES=$1
 INPUT=pmc2015.txt
 
