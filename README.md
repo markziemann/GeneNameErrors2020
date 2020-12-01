@@ -16,6 +16,8 @@ The goal of this work is to screen PubMed Central for MS Excel spreadsheets and 
 
 * read_xls.R is a helper Rscript that executes the readxl function which is very efficient at extracting tabular data from Excel sheets.
 
+* pmcjournal.sh parses the PMC summary text file and outputs a tabular file that links PMCIDs to journal names
+
 ## Input data
 
 There are several files like pmc2015.txt which is a list of PMC papers. I
