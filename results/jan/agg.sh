@@ -19,8 +19,8 @@ join -1 1 -2 2 tmp $AGG > tmp2
 
 mv tmp2 $AGG
 
-rm tmp tmp2
+rm tmp
 
 # summary
-cut -d ' ' -f2 $AGG | sort | uniq -c | sort -k1nr | tail
+cut -d ' ' -f2 $AGG | sort | uniq -c | sort -k1nr | head
 
