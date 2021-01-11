@@ -1,0 +1,89 @@
+---
+title: "Gene Name Error Monthly Dashboard"
+author: "Mark Ziemann"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+theme: cosmo
+---
+
+## Intro
+
+Gene name errors result when data are imported improperly into MS Excel and other
+spreadsheet programs.
+Certain gene names like MARCH3, SEPT2 and DEC1 are converted into date format.
+These errors are common in supplementary data files in the field of genomics.
+This could be considered a small error because it only affects a small number of genes,
+however it is symptomtic of poor data processing methods.
+The purpose of this script is to identify gene name errors present in supplementary files of PubMed 
+Central articles in the previous month.
+These reports will be stored on our server for posterity.
+
+
+```{r,libs}
+
+library("xml2")
+library("reutils")
+library(readxl)    
+
+
+```
+
+## Get PMC IDs
+
+Here I will be getting PubMed Central IDs for the previous month.
+
+Start with figuring out the date.
+
+```{r,month}
+
+
+CURRENT_MONTH=format(Sys.time(), "%m")
+CURRENT_YEAR=format(Sys.time(), "%Y")
+
+if (CURRENT_MONTH == "01") {
+  PREV_YEAR=as.character(as.numeric(format(Sys.time(), "%Y"))-1)
+  PREV_MONTH="12"
+} else {
+  PREV_YEAR=CURRENT_YEAR
+  PREV_MONTH=as.character(as.numeric(format(Sys.time(), "%m"))-1)
+}
+
+DATE=paste(PREV_YEAR,"/",PREV_MONTH,sep="")
+
+```
+
+Let's see how many PMC IDs we have this month
+
+```{r,pmc}
+
+QUERY ='((genom*[Abstract]))'
+
+ESEARCH_RES <- esearch(term=QUERY, db = "pmc", rettype = "uilist", retmode = "xml", retstart = 0, 
+  retmax = 5000000, usehistory = TRUE, webenv = NULL, querykey = NULL, sort = NULL, field = NULL, 
+  datetype = NULL, reldate = NULL, mindate = DATE, maxdate = DATE)
+
+pmc <- efetch(ESEARCH_RES,retmode="text",rettype="uilist",outfile="pmcids.txt")
+pmc <- read.table(pmc)
+
+nrow(pmc)
+
+pmc <- paste("PMC",pmc$V1,sep="")
+writeLines(pmc,con="pmc.txt")
+
+```
+
+## Run the screen
+
+Now run the bash script.
+
+
+```{r,screen}
+
+system("./gene_names.sh pmc.txt")
+
+
+```
+
+
