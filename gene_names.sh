@@ -168,8 +168,9 @@ rm tmp*
 #screen_pmc PMC6364112
 
 >begin
+PMC_FILE=$1
 screen_pmc $PMC
-for PMC in $(cat pmc2015.txt ) ; do
+for PMC in $(cat $PMC_FILE ) ; do
   screen_pmc $PMC
 done
 >finish
