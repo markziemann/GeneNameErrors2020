@@ -104,7 +104,7 @@ The dates and five-digit numbers indicate transmogrified gene names.
 
 ```{r,screen}
 
-system("./gene_names.sh pmc.txt")
+#system("./gene_names.sh pmc.txt")
 results <- readLines("results.txt")
 
 XLS <- results[grep("XLS",results,ignore.case=TRUE)]
@@ -225,12 +225,9 @@ Congrats to our Journal of the Month winner!
 
 ```{r,journal_winner}
 
-JOURNAL_WINNER = as.character(JOURNALS[1,1])
-
 JOURNAL_WINNER
 
 ```
-
 
 ## Paper of the month winners
 
