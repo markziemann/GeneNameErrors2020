@@ -11,22 +11,19 @@ theme: cosmo
 ## Intro
 
 Gene name errors result when data are imported improperly into MS Excel and other
-spreadsheet programs.
+spreadsheet programs (Zeeberg et al, 2004).
 Certain gene names like MARCH3, SEPT2 and DEC1 are converted into date format.
-These errors are common in supplementary data files in the field of genomics.
+These errors are surprisingly common in supplementary data files in the field of genomics (Ziemann et al, 2016).
 This could be considered a small error because it only affects a small number of genes,
 however it is symptomtic of poor data processing methods.
 The purpose of this script is to identify gene name errors present in supplementary files of PubMed 
 Central articles in the previous month.
-These reports will be stored on our server for posterity.
-
 
 ```{r,libs}
 
 library("xml2")
 library("reutils")
-library(readxl)    
-
+library("readxl")
 
 ```
 
@@ -34,7 +31,7 @@ library(readxl)
 
 Here I will be getting PubMed Central IDs for the previous month.
 
-Start with figuring out the date.
+Start with figuring out the date to search PubMed Central.
 
 ```{r,month}
 
@@ -51,10 +48,11 @@ if (CURRENT_MONTH == "01") {
 }
 
 DATE=paste(PREV_YEAR,"/",PREV_MONTH,sep="")
+DATE
 
 ```
 
-Let's see how many PMC IDs we have this month
+Let's see how many PMC IDs we have in the past month.
 
 ```{r,pmc}
 
@@ -66,24 +64,223 @@ ESEARCH_RES <- esearch(term=QUERY, db = "pmc", rettype = "uilist", retmode = "xm
 
 pmc <- efetch(ESEARCH_RES,retmode="text",rettype="uilist",outfile="pmcids.txt")
 pmc <- read.table(pmc)
-
-nrow(pmc)
-
 pmc <- paste("PMC",pmc$V1,sep="")
+NUM_ARTICLES=length(pmc)
+NUM_ARTICLES
 writeLines(pmc,con="pmc.txt")
 
 ```
 
 ## Run the screen
 
-Now run the bash script.
+Now run the bash script. 
+Note that false positives can occur (~1.5%) and these results have not been verified by a human.
 
+Here are some definitions:
+
+* NUM_XLS = Number of supplementary Excel files in this set of PMC articles.
+
+* NUM_XLS_ARTICLES = Number of articles matching the PubMed Central search which have supplementary Excel files.
+
+* GENELISTS = The gene lists found in the Excel files.
+Each Excel file is counted once even it has multiple gene lists.
+
+* NUM_GENELISTS = The number of Excel files with gene lists.
+
+* NUM_GENELIST_ARTICLES = The number of PMC articles with supplementary Excel gene lists. 
+
+* ERROR_GENELISTS = Files suspected to contain gene name errors.
+The dates and five-digit numbers indicate transmogrified gene names.
+
+* NUM_ERROR_GENELISTS = Number of Excel gene lists with errors.
+
+* NUM_ERROR_GENELIST_ARTICLES = Number of articles with supplementary Excel gene name errors.
+
+* ERROR_PROPORTION = This is the proportion of articles with Excel gene lists that have errors.
 
 ```{r,screen}
 
 system("./gene_names.sh pmc.txt")
+results <- readLines("results.txt")
 
+XLS <- results[grep("XLS",results,ignore.case=TRUE)]
+NUM_XLS = length(XLS)
+NUM_XLS
+
+NUM_XLS_ARTICLES = length(unique(sapply(strsplit(XLS," "),"[[",1)))
+NUM_XLS_ARTICLES
+
+GENELISTS <- XLS[lapply(strsplit(XLS," "),length)>2]
+#GENELISTS
+
+NUM_GENELISTS <- length(unique(sapply(strsplit(GENELISTS," "),"[[",2)))
+NUM_GENELISTS
+
+NUM_GENELIST_ARTICLES <- length(unique(sapply(strsplit(GENELISTS," "),"[[",1)))
+NUM_GENELIST_ARTICLES
+
+ERROR_GENELISTS <- XLS[lapply(strsplit(XLS," "),length)>3]
+#ERROR_GENELISTS
+
+NUM_ERROR_GENELISTS = length(ERROR_GENELISTS)
+NUM_ERROR_GENELISTS
+
+GENELIST_ERROR_ARTICLES <- unique(sapply(strsplit(ERROR_GENELISTS," "),"[[",1))
+GENELIST_ERROR_ARTICLES
+
+NUM_ERROR_GENELIST_ARTICLES <- length(GENELIST_ERROR_ARTICLES) 
+NUM_ERROR_GENELIST_ARTICLES
+
+ERROR_PROPORTION = NUM_ERROR_GENELIST_ARTICLES / NUM_GENELIST_ARTICLES
+ERROR_PROPORTION
+
+```
+
+## Look at the errors detected
+
+Here you can have a look at all the gene lists detected in the past month, as well as those with errors.
+The dates are obvious errors, these are commonly dates in September, March, December and October.
+The five-digit numbers represent dates as they are encoded in the Excel internal format.
+The five digit number is the number of days since 1900.
+If you were to take these numbers and put them into Excel and format the cells as dates, then these will also mostly map to dates in September, March, December and October.
+
+```{r,errors2}
+
+GENELISTS
+
+ERROR_GENELISTS
+
+```
+
+## In depth look at the errors
+
+Let's investigate the errors in more detail.
+
+```{r,errors}
+
+# By species
+SPECIES <- sapply(strsplit(ERROR_GENELISTS," "),"[[",3)
+table(SPECIES)
+barplot(table(SPECIES))
+
+# Number of affected Excel files per paper
+DIST <- table(sapply(strsplit(ERROR_GENELISTS," "),"[[",1))
+DIST
+summary(as.numeric(DIST))
+hist(DIST,main="Number of affected Excel files per paper")
+
+# PMC Articles with the most errors
+DIST_DF <- as.data.frame(DIST)
+DIST_DF <- DIST_DF[order(-DIST_DF$Freq),,drop=FALSE]
+DIST_DF
+MOST_ERR_FILES = as.character(DIST_DF[1,1])
+MOST_ERR_FILES
+
+# Number of errors per paper
+NERR <- as.numeric(sapply(strsplit(ERROR_GENELISTS," "),"[[",4))
+names(NERR) <- sapply(strsplit(ERROR_GENELISTS," "),"[[",1)
+NERR <-tapply(NERR, names(NERR), sum)
+NERR
+hist(NERR,main="number of errors per PMC article")
+NERR_DF <- as.data.frame(NERR)
+NERR_DF <- NERR_DF[order(-NERR_DF$NERR),,drop=FALSE]
+NERR_DF
+MOST_ERR = rownames(NERR_DF)[1]
+MOST_ERR
+
+```
+
+## Journals affected
+
+```{r,journals,fig.width=8,fig.height=8}
+
+GENELIST_ERROR_ARTICLES <- gsub("PMC","",GENELIST_ERROR_ARTICLES)
+
+ARTICLES <- esummary(GENELIST_ERROR_ARTICLES ,db = "pmc")
+
+JOURNALS <- as.data.frame(table(ARTICLES$xmlValue("//FullJournalName")))
+
+JOURNALS <- JOURNALS[order(-JOURNALS$Freq),]
+
+JOURNAL_WINNER = as.character(JOURNALS[1,1])
+
+JOURNALS
+
+JOURNALS <- JOURNALS[order(JOURNALS$Freq),]
+
+par(mar=c(5,25,4,2))
+barplot(JOURNALS$Freq,names.arg = JOURNALS$Var1,horiz=TRUE,las=1, 
+  xlab="Papers with gene name errors in supp files",
+  main="Top journals this month")
+
+```
+
+## Journal of the month winner
+
+Congrats to our Journal of the Month winner!
+
+```{r,journal_winner}
+
+JOURNAL_WINNER = as.character(JOURNALS[1,1])
+
+JOURNAL_WINNER
 
 ```
 
 
+## Paper of the month winners
+
+There are two categories:
+
+* Paper with the most suplementary files affected by gene name errors (MOST_ERR_FILES)
+
+* Paper with the most gene names converted to dates (MOST_ERR)
+
+Sometimes, one paper can win both categories.
+Congrats to our winners.
+
+### Paper with most files affected
+
+```{r,most_err_files}
+
+MOST_ERR_FILES <- gsub("PMC","",MOST_ERR_FILES)
+
+article <- esummary(MOST_ERR_FILES,db = "pmc")
+
+article
+
+#journal <- article$xmlValue("//FullJournalName")
+
+```
+
+### Paper with most date conversions
+
+```{r,most_err}
+
+MOST_ERR <- gsub("PMC","",MOST_ERR)
+
+article <- esummary(MOST_ERR,db = "pmc")
+
+article
+
+```
+
+
+
+## Trend info
+
+TODO: To plot the trend over the past 6 months.
+
+## References
+
+1. Zeeberg, B.R., Riss, J., Kane, D.W. et al. Mistaken Identifiers: Gene name errors can be introduced inadvertently when using Excel in bioinformatics. BMC Bioinformatics 5, 80 (2004). https://doi.org/10.1186/1471-2105-5-80
+
+2. Ziemann, M., Eren, Y. & El-Osta, A. Gene name errors are widespread in the scientific literature. Genome Biol 17, 177 (2016). https://doi.org/10.1186/s13059-016-1044-7
+
+## SessionInfo
+
+```{r,sessioninfo}
+
+sessionInfo()
+
+```
