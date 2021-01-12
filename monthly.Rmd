@@ -8,6 +8,10 @@ output:
 theme: cosmo
 ---
 
+Source: https://github.com/markziemann/GeneNameErrors2020
+
+Vew the reports: http://118.138.234.73/public/gene_name_errors/
+
 ## Intro
 
 Gene name errors result when data are imported improperly into MS Excel and other
