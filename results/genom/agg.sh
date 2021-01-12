@@ -22,5 +22,5 @@ mv tmp2 $AGG
 rm tmp
 
 # summary
-cut -d ' ' -f2 $AGG | sort | uniq -c | sort -k1nr | head
+cut -d ' ' -f2 $AGG | sort | uniq -c | sort -k1nr | head -20
 
