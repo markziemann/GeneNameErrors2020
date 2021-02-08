@@ -1,0 +1,126 @@
+---
+title: "Gene_name_errors_by_year"
+author: "mandhri"
+date: "02/02/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+We are passing the information from text file to figures that will be needed in the paper
+
+```{r read}
+#Number of publications 
+pmc2014<-read.table("pmc/genom/pmc2014.txt")
+head(pmc2014)
+pmc2014<-nrow(pmc2014)
+pmc2014
+pmc2015<-read.table("pmc/genom/pmc2015.txt")
+pmc2015<-nrow(pmc2015)
+pmc2015
+pmc2016<-read.table("pmc/genom/pmc2016.txt")
+pmc2016<-nrow(pmc2016)
+pmc2017<-read.table("pmc/genom/pmc2017.txt")
+pmc2017<-nrow(pmc2017)
+pmc2018<-read.table("pmc/genom/pmc2018.txt")
+pmc2018<-nrow(pmc2018)
+pmc2019<-read.table("pmc/genom/pmc2019.txt")
+pmc2019<-nrow(pmc2019)
+pmc2020<-read.table("pmc/genom/pmc2020.txt")
+pmc2020<-nrow(pmc2020)
+sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
+
+
+#Number of supplementary files
+res2014<-readLines("results/genom/results2014.txt")
+head(res2014)
+res2014_length<-length(unique(sapply(strsplit(res2014," "),"[[",1)))
+res2015<-readLines("results/genom/results2015.txt")
+res2015_length<-length(unique(sapply(strsplit(res2015," "),"[[",1)))
+res2016<-readLines("results/genom/results2016.txt")
+res2016_length<-length(unique(sapply(strsplit(res2016," "),"[[",1)))
+res2017<-readLines("results/genom/results2017.txt")
+res2017_length<-length(unique(sapply(strsplit(res2017," "),"[[",1)))
+res2018<-readLines("results/genom/results2018.txt")
+res2018_length<-length(unique(sapply(strsplit(res2018," "),"[[",1)))
+res2019<-readLines("results/genom/results2019.txt")
+res2019_length<-length(unique(sapply(strsplit(res2019," "),"[[",1)))
+res2020<-readLines("results/genom/results2020.txt")
+res2020_length<-length(unique(sapply(strsplit(res2020," "),"[[",1)))
+
+sum(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length)
+
+
+#Number of publications
+res2014_l<-strsplit(res2014," ")
+head(res2014_l)
+res2014_lx<-res2014_l[which(lapply(res2014_l,length)>2)]
+res2014_lx<-length(unique(sapply(res2014_lx,"[[",1)))
+res2014_lx
+res2015_l<-strsplit(res2015," ")
+res2015_lx<-res2015_l[which(lapply(res2015_l,length)>2)]
+res2015_lx<-length(unique(sapply(res2015_lx,"[[",1)))
+res2016_l<-strsplit(res2016," ")
+res2016_lx<-res2016_l[which(lapply(res2016_l,length)>2)]
+res2016_lx<-length(unique(sapply(res2016_lx,"[[",1)))
+res2017_l<-strsplit(res2017," ")
+res2017_lx<-res2017_l[which(lapply(res2017_l,length)>2)]
+res2017_lx<-length(unique(sapply(res2017_lx,"[[",1)))
+res2018_l<-strsplit(res2018," ")
+res2018_lx<-res2018_l[which(lapply(res2018_l,length)>2)]
+res2018_lx<-length(unique(sapply(res2018_lx,"[[",1)))
+res2019_l<-strsplit(res2019," ")
+res2019_lx<-res2019_l[which(lapply(res2019_l,length)>2)]
+res2019_lx<-length(unique(sapply(res2019_lx,"[[",1)))
+res2020_l<-strsplit(res2020," ")
+res2020_lx<-res2020_l[which(lapply(res2020_l,length)>2)]
+res2020_lx<-length(unique(sapply(res2020_lx,"[[",1)))
+
+sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
+
+
+#Publications with suspected gene name errors
+aggregated_res<-readLines("results/genom/aggregated_res.txt")
+head(aggregated_res)
+suspected_pub<-length(unique(sapply(strsplit(aggregated_res," "),"[[",1)))
+suspected_pub
+
+
+#Affected XLS files
+affected_xls<-length(sapply(strsplit(aggregated_res," "),"[[",1))
+affected_xls
+
+#False positives
+false_positive<-read.table("results/genom/false_positive.txt")
+head(false_positive)
+false_positive_l<-length(unique(false_positive$V1))
+false_positive_l
+
+#false positives in 2018
+false_positive_2018<-subset(false_positive[false_positive$V4==2018,])
+dim(false_positive_2018)
+false_positive_2018<-length(unique(false_positive_2018$V1))
+false_positive_2018
+
+#Publications with confirmed gene name errors
+
+confirm_pub<-readLines()
+
+
+
+
+```
+
+## 
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
