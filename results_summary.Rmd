@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 We are passing the information from text file to figures that will be needed in the paper
 
 ```{r read}
-#Number of publications 
+# Number of publications 
 pmc2014<-read.table("pmc/genom/pmc2014.txt")
 head(pmc2014)
 pmc2014<-nrow(pmc2014)
@@ -35,7 +35,7 @@ pmc2020<-nrow(pmc2020)
 sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
 
 
-#Number of supplementary files
+# Number of supplementary files
 res2014<-readLines("results/genom/results2014.txt")
 head(res2014)
 res2014_length<-length(unique(sapply(strsplit(res2014," "),"[[",1)))
@@ -55,7 +55,7 @@ res2020_length<-length(unique(sapply(strsplit(res2020," "),"[[",1)))
 sum(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length)
 
 
-#Number of publications
+# Number of publications xl files
 res2014_l<-strsplit(res2014," ")
 head(res2014_l)
 res2014_lx<-res2014_l[which(lapply(res2014_l,length)>2)]
@@ -83,34 +83,157 @@ res2020_lx<-length(unique(sapply(res2020_lx,"[[",1)))
 sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
 
 
-#Publications with suspected gene name errors
+# Publications with suspected gene name errors
 aggregated_res<-readLines("results/genom/aggregated_res.txt")
 head(aggregated_res)
 suspected_pub<-length(unique(sapply(strsplit(aggregated_res," "),"[[",1)))
 suspected_pub
 
+aggregated_res<-read.table("results/genom/aggregated_res.txt")
+head(aggregated_res)
+dim(aggregated_res)
+p<-aggregated_res[1:3,]
+p
+p<-subset(p[p$V3==2014,])
+dim(p)
+p
 
-#Affected XLS files
+suspected_pub_2014<-subset(aggregate.ts[aggregated_res$V3==results2014.txt,])
+
+
+
+    
+# Affected XLS files
 affected_xls<-length(sapply(strsplit(aggregated_res," "),"[[",1))
 affected_xls
 
-#False positives
+# False positives
 false_positive<-read.table("results/genom/false_positive.txt")
 head(false_positive)
 false_positive_l<-length(unique(false_positive$V1))
 false_positive_l
 
-#false positives in 2018
+## false positives in 2014,2015,2016,2017,2018,2019,2020
+false_positive_2014<-subset(false_positive[false_positive$V4==2014,])
+dim(false_positive_2014)
+false_positive_2014<-length(unique(false_positive_2014$V1))
+false_positive_2014
+
+false_positive_2015<-subset(false_positive[false_positive$V4==2015,])
+dim(false_positive_2015)
+false_positive_2015<-length(unique(false_positive_2015$V1))
+false_positive_2015
+
+false_positive_2016<-subset(false_positive[false_positive$V4==2016,])
+dim(false_positive_2016)
+false_positive_2016<-length(unique(false_positive_2016$V1))
+false_positive_2016
+
+false_positive_2017<-subset(false_positive[false_positive$V4==2017,])
+dim(false_positive_2017)
+false_positive_2017<-length(unique(false_positive_2017$V1))
+false_positive_2017
+
 false_positive_2018<-subset(false_positive[false_positive$V4==2018,])
 dim(false_positive_2018)
 false_positive_2018<-length(unique(false_positive_2018$V1))
 false_positive_2018
 
-#Publications with confirmed gene name errors
+false_positive_2019<-subset(false_positive[false_positive$V4==2019,])
+dim(false_positive_2019)
+false_positive_2019<-length(unique(false_positive_2019$V1))
+false_positive_2019
 
-confirm_pub<-readLines()
+false_positive_2020<-subset(false_positive[false_positive$V4==2020,])
+dim(false_positive_2020)
+false_positive_2020<-length(unique(false_positive_2020$V1))
+false_positive_2020
+
+# Affected XLS
+affected_xls<-read.table("results/genom/true_positive.txt")
+nrow(affected_xls)
+
+## Affected xls for 2014
+affected_xls_2014<-subset(affected_xls[affected_xls$V4==2014,])
+affected_xls_2014<-length(affected_xls_2014$V1)
+affected_xls_2014
+
+## Affected xls for 2015
+affected_xls_2015<-subset(affected_xls[affected_xls$V4==2015,])
+affected_xls_2015<-length(affected_xls_2015$V1)
+affected_xls_2015
+
+## Affected xls for 2016
+affected_xls_2016<-subset(affected_xls[affected_xls$V4==2016,])
+affected_xls_2016<-length(affected_xls_2016$V1)
+affected_xls_2016
+
+## Affected xls for 2017
+affected_xls_2017<-subset(affected_xls[affected_xls$V4==2017,])
+affected_xls_2017<-length(affected_xls_2017$V1)
+affected_xls_2017
+
+## Affected xls for 2018
+affected_xls_2018<-subset(affected_xls[affected_xls$V4==2018,])
+affected_xls_2018<-length(affected_xls_2018$V1)
+affected_xls_2018
+
+## Affected xls for 2019
+affected_xls_2019<-subset(affected_xls[affected_xls$V4==2019,])
+affected_xls_2019<-length(affected_xls_2019$V1)
+affected_xls_2019
+
+## Affected xls for 2020
+affected_xls_2020<-subset(affected_xls[affected_xls$V4==2020,])
+affected_xls_2020<-length(affected_xls_2020$V1)
+affected_xls_2020
 
 
+
+# Affected pub
+affected_pub<-length(unique(affected_xls$V1))
+affected_pub
+
+## affected pub for 2014
+affected_pub_2014<-subset(affected_xls[affected_xls$V4==2014,])
+dim(affected_pub_2014)
+affected_pub_2014<-length(unique(affected_pub_2014$V1))
+affected_pub_2014
+
+## affected pub for 2015
+affected_pub_2015<-subset(affected_xls[affected_xls$V4==2015,])
+affected_pub_2015<-length(unique(affected_pub_2015$V1))
+affected_pub_2015
+
+## affected pub for 2016
+affected_pub_2016<-subset(affected_xls[affected_xls$V4==2016,])
+dim(affected_pub_2016)
+affected_pub_2016<-length(unique(affected_pub_2016$V1))
+affected_pub_2016
+
+## affected pub for 2017
+affected_pub_2017<-subset(affected_xls[affected_xls$V4==2017,])
+dim(affected_pub_2017)
+affected_pub_2017<-length(unique(affected_pub_2017$V1))
+affected_pub_2017
+
+## affected pub for 2018
+affected_pub_2018<-subset(affected_xls[affected_xls$V4==2018,])
+dim(affected_pub_2018)
+affected_pub_2018<-length(unique(affected_pub_2018$V1))
+affected_pub_2018
+
+## affected pub for 2019
+affected_pub_2019<-subset(affected_xls[affected_xls$V4==2019,])
+dim(affected_pub_2019)
+affected_pub_2019<-length(unique(affected_pub_2019$V1))
+affected_pub_2019
+
+## affected pub for 2020
+affected_pub_2020<-subset(affected_xls[affected_xls$V4==2020,])
+dim(affected_pub_2020)
+affected_pub_2020<-length(unique(affected_pub_2020$V1))
+affected_pub_2020
 
 
 ```
