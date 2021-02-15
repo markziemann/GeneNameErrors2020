@@ -80,8 +80,8 @@ res2020_l<-strsplit(res2020," ")
 res2020_lx<-res2020_l[which(lapply(res2020_l,length)>2)]
 res2020_lx<-length(unique(sapply(res2020_lx,"[[",1)))
 
-sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
-
+pub_with_xls_files<-sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
+pub_with_xls_files
 
 # Publications with suspected gene name errors
 aggregated_res<-readLines("results/genom/aggregated_res.txt")
@@ -234,6 +234,51 @@ affected_pub_2020<-subset(affected_xls[affected_xls$V4==2020,])
 dim(affected_pub_2020)
 affected_pub_2020<-length(unique(affected_pub_2020$V1))
 affected_pub_2020
+
+# percentages Proportion of Excel gene lists papers containing errors
+
+Total_percent_of_errors<-signif(affected_pub/pub_with_xls_files*100,3)
+Total_percent_of_errors
+
+## 2014
+percentage_2014<-signif(affected_pub_2014/res2014_lx*100,3)
+percentage_2014
+
+## 2015
+percentage_2015<-signif(affected_pub_2015/res2015_lx*100,3)
+percentage_2015
+
+## 2016
+percentage_2016<-signif(affected_pub_2016/res2016_lx*100,3)
+percentage_2016
+
+## 2017
+percentage_2017<-signif(affected_pub_2017/res2017_lx*100,3)
+percentage_2017
+
+## 2018
+percentage_2018<-signif(affected_pub_2018/res2018_lx*100,3)
+percentage_2018
+
+## 2019
+percentage_2019<-signif(affected_pub_2019/res2019_lx*100,3)
+percentage_2019
+
+## 2020
+percentage_2020<-signif(affected_pub_2020/res2020_lx*100,3)
+percentage_2020
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```
