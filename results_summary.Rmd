@@ -9,11 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r,library_load}
+library("dplyr")
+library("kableExtra")
+
+
+
+```
+
 ## Introduction
 
 We are passing the information from text file to figures that will be needed in the paper
 
-```{r read}
+```{r,publication_amount read}
 # Number of publications 
 pmc2014<-read.table("pmc/genom/pmc2014.txt")
 head(pmc2014)
@@ -32,9 +40,12 @@ pmc2019<-read.table("pmc/genom/pmc2019.txt")
 pmc2019<-nrow(pmc2019)
 pmc2020<-read.table("pmc/genom/pmc2020.txt")
 pmc2020<-nrow(pmc2020)
-sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
+total_pmc<-sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
 
+pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,pmc_total)
+```
 
+```{r,supplementary_files_amount}
 # Number of supplementary files
 res2014<-readLines("results/genom/results2014.txt")
 head(res2014)
@@ -51,11 +62,13 @@ res2019<-readLines("results/genom/results2019.txt")
 res2019_length<-length(unique(sapply(strsplit(res2019," "),"[[",1)))
 res2020<-readLines("results/genom/results2020.txt")
 res2020_length<-length(unique(sapply(strsplit(res2020," "),"[[",1)))
+total_res<-sum(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length)
 
-sum(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length)
+res<-c(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length,total_res)
+```
 
-
-# Number of publications xl files
+```{r,publications_with_xlgene}
+# Number of publications xl gene files
 res2014_l<-strsplit(res2014," ")
 head(res2014_l)
 res2014_lx<-res2014_l[which(lapply(res2014_l,length)>2)]
@@ -79,79 +92,162 @@ res2019_lx<-length(unique(sapply(res2019_lx,"[[",1)))
 res2020_l<-strsplit(res2020," ")
 res2020_lx<-res2020_l[which(lapply(res2020_l,length)>2)]
 res2020_lx<-length(unique(sapply(res2020_lx,"[[",1)))
+total_pub_xls<-sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
 
-pub_with_xls_files<-sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
-pub_with_xls_files
+pub_xls<-c(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx,total_pub_xls)
+```
 
+```{r,pubs_with_suspected_errors}
 # Publications with suspected gene name errors
 aggregated_res<-readLines("results/genom/aggregated_res.txt")
-head(aggregated_res)
-suspected_pub<-length(unique(sapply(strsplit(aggregated_res," "),"[[",1)))
-suspected_pub
+aggregated_res
+total_suspected_pub<-length(unique(sapply(strsplit(aggregated_res," "),"[[",1)))
+total_suspected_pub
 
-aggregated_res<-read.table("results/genom/aggregated_res.txt")
-head(aggregated_res)
-dim(aggregated_res)
-p<-aggregated_res[1:3,]
-p
-p<-subset(p[p$V3==2014,])
-dim(p)
-p
+suspected_pub<-sapply(strsplit(aggregated_res," "),"[[",1)
+suspected_pub_year<-sapply(strsplit(aggregated_res," "),"[[",3)
+suspected_pub_file<-sapply(strsplit(aggregated_res," "),"[[",4)
+suspected_df<-data.frame(suspected_pub,suspected_pub_year,suspected_pub_file)
+head(suspected_df)
 
-suspected_pub_2014<-subset(aggregate.ts[aggregated_res$V3==results2014.txt,])
+## 2014
+suspected_pub_2014_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2014.txt",])
+suspected_pub_2014<-length(unique(suspected_pub_2014_df$suspected_pub))
+suspected_pub_2014
 
+## 2015
+suspected_pub_2015_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2015.txt",])
+suspected_pub_2015<-length(unique(suspected_pub_2015_df$suspected_pub))
+suspected_pub_2015
 
+## 2016
+suspected_pub_2016_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2016.txt",])
+suspected_pub_2016<-length(unique(suspected_pub_2016_df$suspected_pub))
+suspected_pub_2016
 
-    
+## 2017
+suspected_pub_2017_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2017.txt",])
+suspected_pub_2017<-length(unique(suspected_pub_2017_df$suspected_pub))
+suspected_pub_2017
+
+## 2018
+suspected_pub_2018_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2018.txt",])
+suspected_pub_2018<-length(unique(suspected_pub_2018_df$suspected_pub))
+suspected_pub_2018
+
+## 2019
+suspected_pub_2019_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2019.txt",])
+suspected_pub_2019<-length(unique(suspected_pub_2019_df$suspected_pub))
+suspected_pub_2019
+
+## 2020
+suspected_pub_2020_df<-subset(suspected_df[suspected_df$suspected_pub_year=="results2020.txt",])
+suspected_pub_2020<-length(unique(suspected_pub_2020_df$suspected_pub))
+suspected_pub_2020
+
+suspected_pub<-c(suspected_pub_2014,suspected_pub_2015,suspected_pub_2016,suspected_pub_2017,suspected_pub_2018,suspected_pub_2019,suspected_pub_2020,total_suspected_pub)
+```
+
+```{r,total_affectedxls}  
+
 # Affected XLS files
 affected_xls<-length(sapply(strsplit(aggregated_res," "),"[[",1))
 affected_xls
+```
+```{r,false_positive_xls}
+# False positive xls
+false_positive<-read.table("results/genom/false_positive.txt")
+total_false_positive_xls<-length(false_positive$V1)
+total_false_positive_xls
 
-# False positives
+## 2014
+false_positive_2014<-subset(false_positive[false_positive$V4==2014,])
+false_positive_2014_xls<-length(false_positive_2014$V1)
+false_positive_2014_xls
+
+## 2015
+false_positive_2015<-subset(false_positive[false_positive$V4==2015,])
+false_positive_2015_xls<-length(false_positive_2015$V1)
+false_positive_2015_xls
+
+## 2016
+false_positive_2016<-subset(false_positive[false_positive$V4==2016,])
+false_positive_2016_xls<-length(false_positive_2016$V1)
+false_positive_2016_xls
+
+## 2017
+false_positive_2017<-subset(false_positive[false_positive$V4==2017,])
+false_positive_2017_xls<-length(false_positive_2017$V1)
+false_positive_2017_xls
+
+## 2018
+false_positive_2018<-subset(false_positive[false_positive$V4==2018,])
+false_positive_2018_xls<-length(false_positive_2018$V1)
+false_positive_2018_xls
+
+## 2019
+false_positive_2019<-subset(false_positive[false_positive$V4==2019,])
+false_positive_2019_xls<-length(false_positive_2019$V1)
+false_positive_2019_xls
+
+## 2020
+false_positive_2020<-subset(false_positive[false_positive$V4==2020,])
+false_positive_2020_xls<-length(false_positive_2020$V1)
+false_positive_2020_xls
+
+false_positive_pub<-c(false_positive_2014_xls,false_positive_2015_xls,false_positive_2016_xls,false_positive_2017_xls,false_positive_2018_xls,false_positive_2019_xls,false_positive_2020_xls,total_false_positive_xls)
+```
+
+```{r,false_positive_pub}
+# False positive publications
 false_positive<-read.table("results/genom/false_positive.txt")
 head(false_positive)
-false_positive_l<-length(unique(false_positive$V1))
-false_positive_l
+total_false_positive_pub<-length(unique(false_positive$V1))
+total_false_positive_pub
 
-## false positives in 2014,2015,2016,2017,2018,2019,2020
+## 2014
 false_positive_2014<-subset(false_positive[false_positive$V4==2014,])
-dim(false_positive_2014)
-false_positive_2014<-length(unique(false_positive_2014$V1))
-false_positive_2014
+false_positive_2014_pub<-length(unique(false_positive_2014$V1))
+false_positive_2014_pub
 
+## 2015
 false_positive_2015<-subset(false_positive[false_positive$V4==2015,])
-dim(false_positive_2015)
-false_positive_2015<-length(unique(false_positive_2015$V1))
-false_positive_2015
+false_positive_2015_pub<-length(unique(false_positive_2015$V1))
+false_positive_2015_pub
 
+## 2016
 false_positive_2016<-subset(false_positive[false_positive$V4==2016,])
-dim(false_positive_2016)
-false_positive_2016<-length(unique(false_positive_2016$V1))
-false_positive_2016
+false_positive_2016_pub<-length(unique(false_positive_2016$V1))
+false_positive_2016_pub
 
+## 2017
 false_positive_2017<-subset(false_positive[false_positive$V4==2017,])
-dim(false_positive_2017)
-false_positive_2017<-length(unique(false_positive_2017$V1))
-false_positive_2017
+false_positive_2017_pub<-length(unique(false_positive_2017$V1))
+false_positive_2017_pub
 
+## 2018
 false_positive_2018<-subset(false_positive[false_positive$V4==2018,])
-dim(false_positive_2018)
-false_positive_2018<-length(unique(false_positive_2018$V1))
-false_positive_2018
+false_positive_2018_pub<-length(unique(false_positive_2018$V1))
+false_positive_2018_pub
 
+## 2019
 false_positive_2019<-subset(false_positive[false_positive$V4==2019,])
-dim(false_positive_2019)
-false_positive_2019<-length(unique(false_positive_2019$V1))
-false_positive_2019
+false_positive_2019_pub<-length(unique(false_positive_2019$V1))
+false_positive_2019_pub
 
+## 2020
 false_positive_2020<-subset(false_positive[false_positive$V4==2020,])
-dim(false_positive_2020)
-false_positive_2020<-length(unique(false_positive_2020$V1))
-false_positive_2020
+false_positive_2020_pub<-length(unique(false_positive_2020$V1))
+false_positive_2020_pub
 
+false_positive_pub<-c(false_positive_2014_pub,false_positive_2015_pub,false_positive_2016_pub,false_positive_2017_pub,false_positive_2018_pub,false_positive_2019_pub,false_positive_2020_pub,total_false_positive_pub)
+```
+
+```{r,affected_xls}
 # Affected XLS
 affected_xls<-read.table("results/genom/true_positive.txt")
-nrow(affected_xls)
+total_affected_xls<-nrow(affected_xls)
+total_affected_xls
 
 ## Affected xls for 2014
 affected_xls_2014<-subset(affected_xls[affected_xls$V4==2014,])
@@ -188,53 +284,54 @@ affected_xls_2020<-subset(affected_xls[affected_xls$V4==2020,])
 affected_xls_2020<-length(affected_xls_2020$V1)
 affected_xls_2020
 
+affected_xls<-c(affected_xls_2014,affected_xls_2015,affected_xls_2016,affected_xls_2017,affected_xls_2018,affected_xls_2019,affected_xls_2020,total_affected_xls)
+```
 
-
+```{r,affected_publications}
 # Affected pub
-affected_pub<-length(unique(affected_xls$V1))
-affected_pub
+total_affected_pub<-length(unique(affected_xls$V1))
+total_affected_pub
+
 
 ## affected pub for 2014
-affected_pub_2014<-subset(affected_xls[affected_xls$V4==2014,])
-dim(affected_pub_2014)
-affected_pub_2014<-length(unique(affected_pub_2014$V1))
+pub_2014<-subset(affected_xls[affected_xls$V4==2014,])
+affected_pub_2014<-length(unique(pub_2014$V1))
 affected_pub_2014
 
 ## affected pub for 2015
-affected_pub_2015<-subset(affected_xls[affected_xls$V4==2015,])
-affected_pub_2015<-length(unique(affected_pub_2015$V1))
+pub_2015<-subset(affected_xls[affected_xls$V4==2015,])
+affected_pub_2015<-length(unique(pub_2015$V1))
 affected_pub_2015
 
 ## affected pub for 2016
-affected_pub_2016<-subset(affected_xls[affected_xls$V4==2016,])
-dim(affected_pub_2016)
-affected_pub_2016<-length(unique(affected_pub_2016$V1))
+pub_2016<-subset(affected_xls[affected_xls$V4==2016,])
+affected_pub_2016<-length(unique(pub_2016$V1))
 affected_pub_2016
 
 ## affected pub for 2017
-affected_pub_2017<-subset(affected_xls[affected_xls$V4==2017,])
-dim(affected_pub_2017)
-affected_pub_2017<-length(unique(affected_pub_2017$V1))
+pub_2017<-subset(affected_xls[affected_xls$V4==2017,])
+affected_pub_2017<-length(unique(pub_2017$V1))
 affected_pub_2017
 
 ## affected pub for 2018
-affected_pub_2018<-subset(affected_xls[affected_xls$V4==2018,])
-dim(affected_pub_2018)
-affected_pub_2018<-length(unique(affected_pub_2018$V1))
+pub_2018<-subset(affected_xls[affected_xls$V4==2018,])
+affected_pub_2018<-length(unique(pub_2018$V1))
 affected_pub_2018
 
 ## affected pub for 2019
-affected_pub_2019<-subset(affected_xls[affected_xls$V4==2019,])
-dim(affected_pub_2019)
-affected_pub_2019<-length(unique(affected_pub_2019$V1))
+pub_2019<-subset(affected_xls[affected_xls$V4==2019,])
+affected_pub_2019<-length(unique(pub_2019$V1))
 affected_pub_2019
 
 ## affected pub for 2020
-affected_pub_2020<-subset(affected_xls[affected_xls$V4==2020,])
-dim(affected_pub_2020)
-affected_pub_2020<-length(unique(affected_pub_2020$V1))
+pub_2020<-subset(affected_xls[affected_xls$V4==2020,])
+affected_pub_2020<-length(unique(pub_2020$V1))
 affected_pub_2020
 
+affected_pub<-c(affected_pub_2014,affected_pub_2015,affected_pub_2016,affected_pub_2017,affected_pub_2018,affected_pub_2019,affected_pub_2020,total_affected_pub)
+```
+
+```{r,excelgenelist_paper_error_percentages}
 # percentages Proportion of Excel gene lists papers containing errors
 
 Total_percent_of_errors<-signif(affected_pub/pub_with_xls_files*100,3)
@@ -268,9 +365,16 @@ percentage_2019
 percentage_2020<-signif(affected_pub_2020/res2020_lx*100,3)
 percentage_2020
 
+percentages<-c(percentage_2014,percentage_2015,percentage_2016,percentage_2017,percentage_2018,percentage_2019,percentage_2020,Total_percent_of_errors)
+
+```
 
 
 
+
+mtcars %>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
 
 
 
