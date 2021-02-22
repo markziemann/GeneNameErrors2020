@@ -42,7 +42,7 @@ pmc2020<-read.table("pmc/genom/pmc2020.txt")
 pmc2020<-nrow(pmc2020)
 total_pmc<-sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
 
-pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,pmc_total)
+pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,total_pmc)
 ```
 
 ```{r,supplementary_files_amount}
@@ -93,6 +93,7 @@ res2020_l<-strsplit(res2020," ")
 res2020_lx<-res2020_l[which(lapply(res2020_l,length)>2)]
 res2020_lx<-length(unique(sapply(res2020_lx,"[[",1)))
 total_pub_xls<-sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx)
+
 
 pub_xls<-c(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx,total_pub_xls)
 ```
@@ -151,8 +152,8 @@ suspected_pub<-c(suspected_pub_2014,suspected_pub_2015,suspected_pub_2016,suspec
 ```{r,total_affectedxls}  
 
 # Affected XLS files
-affected_xls<-length(sapply(strsplit(aggregated_res," "),"[[",1))
-affected_xls
+affected_xl<-length(sapply(strsplit(aggregated_res," "),"[[",1))
+affected_xl
 ```
 ```{r,false_positive_xls}
 # False positive xls
@@ -195,7 +196,7 @@ false_positive_2020<-subset(false_positive[false_positive$V4==2020,])
 false_positive_2020_xls<-length(false_positive_2020$V1)
 false_positive_2020_xls
 
-false_positive_pub<-c(false_positive_2014_xls,false_positive_2015_xls,false_positive_2016_xls,false_positive_2017_xls,false_positive_2018_xls,false_positive_2019_xls,false_positive_2020_xls,total_false_positive_xls)
+false_positive_xls<-c(false_positive_2014_xls,false_positive_2015_xls,false_positive_2016_xls,false_positive_2017_xls,false_positive_2018_xls,false_positive_2019_xls,false_positive_2020_xls,total_false_positive_xls)
 ```
 
 ```{r,false_positive_pub}
@@ -334,7 +335,8 @@ affected_pub<-c(affected_pub_2014,affected_pub_2015,affected_pub_2016,affected_p
 ```{r,excelgenelist_paper_error_percentages}
 # percentages Proportion of Excel gene lists papers containing errors
 
-Total_percent_of_errors<-signif(affected_pub/pub_with_xls_files*100,3)
+
+Total_percent_of_errors<-signif(total_affected_pub/total_pub_xls*100,3)
 Total_percent_of_errors
 
 ## 2014
@@ -366,23 +368,24 @@ percentage_2020<-signif(affected_pub_2020/res2020_lx*100,3)
 percentage_2020
 
 percentages<-c(percentage_2014,percentage_2015,percentage_2016,percentage_2017,percentage_2018,percentage_2019,percentage_2020,Total_percent_of_errors)
+percentages
 
 ```
 
 
+```{r,dataframe}
+
+years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
+gene_name_errors_years<-data.frame(pmc,res,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls,affected_pub,percentages)
+gene_name_errors_years<-cbind(years,gene_name_errors_years)
+gene_name_errors_years
 
 
-mtcars %>%
+
+df_gene_name_errors_years<-
+  gene_name_errors_years%>%
   kbl() %>%
   kable_paper("hover", full_width = F)
-
-
-
-
-
-
-
-
 
 
 ```
