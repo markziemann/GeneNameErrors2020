@@ -50,6 +50,7 @@ pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,total_pmc)
 res2014<-readLines("results/genom/results2014.txt")
 head(res2014)
 res2014_length<-length(unique(sapply(strsplit(res2014," "),"[[",1)))
+res2014_length
 res2015<-readLines("results/genom/results2015.txt")
 res2015_length<-length(unique(sapply(strsplit(res2015," "),"[[",1)))
 res2016<-readLines("results/genom/results2016.txt")
@@ -67,16 +68,68 @@ total_res<-sum(res2014_length,res2015_length,res2016_length,res2017_length,res20
 res<-c(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length,total_res)
 ```
 
+```{r,xl_files_with_genelist}
+
+res2014_l<-strsplit(res2014," ")
+head(res2014_l)
+res2014_xlg<-res2014_l[which(lapply(res2014_l,length)>2)]
+res2014_xlg<-length(unique(sapply(res2014_xlg,"[[",2)))
+res2014_xlg
+
+res2015_l<-strsplit(res2015," ")
+head(res2015_l)
+res2015_xlg<-res2015_l[which(lapply(res2015_l,length)>2)]
+res2015_xlg<-length(unique(sapply(res2015_xlg,"[[",2)))
+res2015_xlg
+
+res2016_l<-strsplit(res2016," ")
+head(res2016_l)
+res2016_xlg<-res2016_l[which(lapply(res2016_l,length)>2)]
+res2016_xlg<-length(unique(sapply(res2016_xlg,"[[",2)))
+res2016_xlg
+
+res2017_l<-strsplit(res2017," ")
+head(res2017_l)
+res2017_xlg<-res2017_l[which(lapply(res2017_l,length)>2)]
+res2017_xlg<-length(unique(sapply(res2017_xlg,"[[",2)))
+res2017_xlg
+
+res2018_l<-strsplit(res2018," ")
+head(res2018_l)
+res2018_xlg<-res2018_l[which(lapply(res2018_l,length)>2)]
+res2018_xlg<-length(unique(sapply(res2018_xlg,"[[",2)))
+res2018_xlg
+
+res2019_l<-strsplit(res2019," ")
+head(res2019_l)
+res2019_xlg<-res2019_l[which(lapply(res2019_l,length)>2)]
+res2019_xlg<-length(unique(sapply(res2019_xlg,"[[",2)))
+res2019_xlg
+
+res2020_l<-strsplit(res2020," ")
+head(res2020_l)
+res2020_xlg<-res2020_l[which(lapply(res2020_l,length)>2)]
+res2020_xlg<-length(unique(sapply(res2020_xlg,"[[",2)))
+res2020_xlg
+
+total_pub_xlg<-sum(res2014_xlg,res2015_xlg,res2016_xlg,res2017_xlg,res2018_xlg,res2019_xlg,res2020_xlg)
+total_pub_xlg
+
+pub_xlg<-c(res2014_xlg,res2015_xlg,res2016_xlg,res2017_xlg,res2018_xlg,res2019_xlg,res2020_xlg,total_pub_xlg)
+```
+
 ```{r,publications_with_xlgene}
-# Number of publications xl gene files
 res2014_l<-strsplit(res2014," ")
 head(res2014_l)
 res2014_lx<-res2014_l[which(lapply(res2014_l,length)>2)]
 res2014_lx<-length(unique(sapply(res2014_lx,"[[",1)))
 res2014_lx
+
 res2015_l<-strsplit(res2015," ")
 res2015_lx<-res2015_l[which(lapply(res2015_l,length)>2)]
 res2015_lx<-length(unique(sapply(res2015_lx,"[[",1)))
+res2015_lx
+
 res2016_l<-strsplit(res2016," ")
 res2016_lx<-res2016_l[which(lapply(res2016_l,length)>2)]
 res2016_lx<-length(unique(sapply(res2016_lx,"[[",1)))
@@ -376,9 +429,19 @@ percentages
 ```{r,dataframe}
 
 years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
-gene_name_errors_years<-data.frame(pmc,res,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls,affected_pub,percentages)
+gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls,affected_pub,percentages)
 gene_name_errors_years<-cbind(years,gene_name_errors_years)
-gene_name_errors_years
+colnames(gene_name_errors_years)<-c(" ",
+  "PMC ID",
+  "Excel files screened",
+  "Excel files with gene lists",
+  "Publications with Excel gene lists",
+  "Publications with suspected gene name errors",
+  "False positive XLS files",
+  "False positive publications",
+  "Affected XLS files",
+  "Affected publications",
+  "Proportion of Excel gene lists papers containing errors")
 
 
 
@@ -386,7 +449,7 @@ df_gene_name_errors_years<-
   gene_name_errors_years%>%
   kbl() %>%
   kable_paper("hover", full_width = F)
-
+df_gene_name_errors_years
 
 ```
 
