@@ -468,11 +468,6 @@ grid(nx=0,ny=8,col = "gray")
 #barplot for Proportion of publications affected
 plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "",ylim = c(0,35),type = "b",pch=19,bty="n")
 grid()
-
-
-
-
-
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
