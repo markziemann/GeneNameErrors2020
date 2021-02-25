@@ -419,7 +419,7 @@ percentages
 ```
 
 
-```{r,dataframe}
+```{r,dataframe_years}
 
 years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
 gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
@@ -577,8 +577,7 @@ affected_pub_osativa
 percentage_osativa<-signif(affected_pub_osativa/sativa*100,3)
 percentage_osativa
 
-
-#rnorvegicus
+#Rnorvegicus
 norvegicus_pub<-subset(org_df,org=="Rnorvegicus")
 norvegicus_pub
 norvegicus<-length(unique(norvegicus_pub$pmid))
@@ -590,7 +589,7 @@ affected_pub_rnorvegicus
 percentage_rnorvegicus<-signif(affected_pub_rnorvegicus/norvegicus*100,3)
 percentage_rnorvegicus
 
-#scerevisiae
+#Scerevisiae
 cerevisiae_pub<-subset(org_df,org=="Scerevisiae")
 cerevisiae_pub
 cerevisiae<-length(unique(cerevisiae_pub$pmid))
@@ -603,3 +602,29 @@ percentage_scerevisiae<-signif(affected_pub_scerevisiae/cerevisiae*100,3)
 percentage_scerevisiae
 
 ```
+
+```{r,dataframe_species}
+
+Species<-c("A.thaliana","C.elegans","D.melanogaster","D.rerio","G.gallus","H.sapiens","M.musculus","O.sativa","R.norvegicus","S.cerevisiae")
+
+publications_species<-c(at,cel,mel,rerio,gallus,sapiens,musculus,sativa,norvegicus,cerevisiae)
+publications_species
+
+affected_pubb<-c(affected_pub_at,affected_pub_celegans,affected_pub_drerio,affected_pub_ggallus,affected_pub_hsapiens,affected_pub_melano,affected_pub_mmusculus,affected_pub_osativa,affected_pub_rnorvegicus,affected_pub_scerevisiae)
+
+propotion_species<-c(percentage_at,percentage_celegans,percentage_drerio,percentage_ggallus,percentage_hsapiens,percentage_melano,percentage_mmusculus,percentage_osativa,percentage_rnorvegicus,percentage_scerevisiae)
+
+gene_name_errors_species<-data.frame(Species,publications_species,affected_pubb,propotion_species)
+gene_name_errors_species
+colnames(gene_name_errors_species)<-c("Species",
+  "Publications with excel gene lists",
+  "Affected publications",
+  "Propotion of papers affected")
+
+df_gene_name_errors_species<-
+  gene_name_errors_species%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+df_gene_name_errors_species
+```
+
