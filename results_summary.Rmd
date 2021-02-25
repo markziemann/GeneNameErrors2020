@@ -5,16 +5,9 @@ date: "02/02/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r,library_load}
 library("dplyr")
 library("kableExtra")
-
-
-
 ```
 
 ## Introduction
@@ -44,7 +37,6 @@ total_pmc<-sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
 
 pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,total_pmc)
 ```
-
 ```{r,supplementary_files_amount}
 # Number of supplementary files
 res2014<-readLines("results/genom/results2014.txt")
@@ -201,7 +193,6 @@ suspected_pub_2020
 
 suspected_pub<-c(suspected_pub_2014,suspected_pub_2015,suspected_pub_2016,suspected_pub_2017,suspected_pub_2018,suspected_pub_2019,suspected_pub_2020,total_suspected_pub)
 ```
-
 ```{r,total_affectedxls}  
 
 # Affected XLS files
@@ -338,11 +329,12 @@ affected_xls_2020<-subset(affected_xls[affected_xls$V4==2020,])
 affected_xls_2020<-length(affected_xls_2020$V1)
 affected_xls_2020
 
-affected_xls<-c(affected_xls_2014,affected_xls_2015,affected_xls_2016,affected_xls_2017,affected_xls_2018,affected_xls_2019,affected_xls_2020,total_affected_xls)
+affected_xls_files<-c(affected_xls_2014,affected_xls_2015,affected_xls_2016,affected_xls_2017,affected_xls_2018,affected_xls_2019,affected_xls_2020,total_affected_xls)
 ```
 
 ```{r,affected_publications}
 # Affected pub
+affected_xls<-read.table("results/genom/true_positive.txt")
 total_affected_pub<-length(unique(affected_xls$V1))
 total_affected_pub
 
@@ -383,6 +375,7 @@ affected_pub_2020<-length(unique(pub_2020$V1))
 affected_pub_2020
 
 affected_pub<-c(affected_pub_2014,affected_pub_2015,affected_pub_2016,affected_pub_2017,affected_pub_2018,affected_pub_2019,affected_pub_2020,total_affected_pub)
+affected_pub
 ```
 
 ```{r,excelgenelist_paper_error_percentages}
@@ -429,7 +422,7 @@ percentages
 ```{r,dataframe}
 
 years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
-gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls,affected_pub,percentages)
+gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
 gene_name_errors_years<-cbind(years,gene_name_errors_years)
 colnames(gene_name_errors_years)<-c(" ",
   "PMC ID",
@@ -470,4 +463,143 @@ plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "
 grid()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r,gene_name_errors_organism}
+#Athaliana
+res_all_years<-c(res2014,res2015,res2016,res2017,res2018,res2019,res2020)
+str(res_all_years)
+res_all_years_l<-strsplit(res_all_years," ")
+head(res_all_years_l)
+res_all_years_lx<-res_all_years_l[which(lapply(res_all_years_l,length)>2)]
+head(res_all_years_lx)
+pmid<-sapply(res_all_years_lx,"[[",1)
+org<-sapply(res_all_years_lx,"[[",3)
+org_df<-data.frame(pmid,org)
+org_df
+at_pub<-subset(org_df,org=="Athaliana")
+at_pub
+at<-length(unique(at_pub$pmid))
+at
+
+str(affected_xls)
+affected_xls
+athaliana<-subset(affected_xls[affected_xls$V2=="Athaliana",])
+affected_pub_at<-length(unique(athaliana$V1))
+affected_pub_at
+percentage_at<-signif(affected_pub_at/at*100,3)
+percentage_at
+
+#Celegans
+
+cel_pub<-subset(org_df,org=="Celegans")
+cel_pub
+cel<-length(unique(cel_pub$pmid))
+cel
+
+celegans<-subset(affected_xls[affected_xls$V2=="Celegans",])
+affected_pub_celegans<-length(unique(celegans$V1))
+affected_pub_celegans
+percentage_celegans<-signif(affected_pub_celegans/cel*100,3)
+percentage_celegans
+
+
+#Dmelanogaster
+mel_pub<-subset(org_df,org=="Dmelanogaster")
+mel_pub
+mel<-length(unique(mel_pub$pmid))
+mel
+
+melano<-subset(affected_xls[affected_xls$V2=="Dmelanogaster",])
+affected_pub_melano<-length(unique(melano$V1))
+affected_pub_melano
+percentage_melano<-signif(affected_pub_melano/mel*100,3)
+percentage_melano
+
+
+#Drerio
+rerio_pub<-subset(org_df,org=="Drerio")
+rerio_pub
+rerio<-length(unique(rerio_pub$pmid))
+rerio
+
+drerio<-subset(affected_xls[affected_xls$V2=="Drerio",])
+affected_pub_drerio<-length(unique(drerio$V1))
+affected_pub_drerio
+percentage_drerio<-signif(affected_pub_drerio/rerio*100,3)
+percentage_drerio
+
+
+#Ggallus
+gallus_pub<-subset(org_df,org=="Ggallus")
+gallus_pub
+gallus<-length(unique(gallus_pub$pmid))
+gallus
+
+ggallus<-subset(affected_xls[affected_xls$V2=="Ggallus",])
+affected_pub_ggallus<-length(unique(ggallus$V1))
+affected_pub_ggallus
+percentage_ggallus<-signif(affected_pub_ggallus/gallus*100,3)
+percentage_ggallus
+
+#Hsapiens
+sapiens_pub<-subset(org_df,org=="Hsapiens")
+sapiens_pub
+sapiens<-length(unique(sapiens_pub$pmid))
+sapiens
+
+hsapiens<-subset(affected_xls[affected_xls$V2=="Hsapiens",])
+affected_pub_hsapiens<-length(unique(hsapiens$V1))
+affected_pub_hsapiens
+percentage_hsapiens<-signif(affected_pub_hsapiens/sapiens*100,3)
+percentage_hsapiens
+
+
+#Mmusculus
+musculus_pub<-subset(org_df,org=="Mmusculus")
+musculus_pub
+musculus<-length(unique(musculus_pub$pmid))
+musculus
+
+mmusculus<-subset(affected_xls[affected_xls$V2=="Mmusculus",])
+affected_pub_mmusculus<-length(unique(mmusculus$V1))
+affected_pub_mmusculus
+percentage_mmusculus<-signif(affected_pub_mmusculus/musculus*100,3)
+percentage_mmusculus
+
+#Osativa
+sativa_pub<-subset(org_df,org=="Osativa")
+sativa_pub
+sativa<-length(unique(sativa_pub$pmid))
+sativa
+
+osativa<-subset(affected_xls[affected_xls$V2=="Osativa",])
+affected_pub_osativa<-length(unique(osativa$V1))
+affected_pub_osativa
+percentage_osativa<-signif(affected_pub_osativa/sativa*100,3)
+percentage_osativa
+
+
+#rnorvegicus
+norvegicus_pub<-subset(org_df,org=="Rnorvegicus")
+norvegicus_pub
+norvegicus<-length(unique(norvegicus_pub$pmid))
+norvegicus
+
+rnorvegicus<-subset(affected_xls[affected_xls$V2=="Rnorvegicus",])
+affected_pub_rnorvegicus<-length(unique(rnorvegicus$V1))
+affected_pub_rnorvegicus
+percentage_rnorvegicus<-signif(affected_pub_rnorvegicus/norvegicus*100,3)
+percentage_rnorvegicus
+
+#scerevisiae
+cerevisiae_pub<-subset(org_df,org=="Scerevisiae")
+cerevisiae_pub
+cerevisiae<-length(unique(cerevisiae_pub$pmid))
+cerevisiae
+
+scerevisiae<-subset(affected_xls[affected_xls$V2=="Scerevisiae",])
+affected_pub_scerevisiae<-length(unique(scerevisiae$V1))
+affected_pub_scerevisiae
+percentage_scerevisiae<-signif(affected_pub_scerevisiae/cerevisiae*100,3)
+percentage_scerevisiae
+
+```
