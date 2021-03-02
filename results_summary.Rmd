@@ -34,9 +34,11 @@ pmc2019<-nrow(pmc2019)
 pmc2020<-read.table("pmc/genom/pmc2020.txt")
 pmc2020<-nrow(pmc2020)
 total_pmc<-sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
-
 pmc<-c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,total_pmc)
 ```
+
+
+
 ```{r,supplementary_files_amount}
 # Number of supplementary files
 res2014<-readLines("results/genom/results2014.txt")
@@ -626,5 +628,24 @@ df_gene_name_errors_species<-
   kbl() %>%
   kable_paper("hover", full_width = F)
 df_gene_name_errors_species
+```
+
+
+
+
+```{r,gene_name_errors_journal}
+
+#journals index in PMC
+
+
+#journals with supplementary files
+journal_supplementary<-length(unique(affected_xls$V3))
+journal_supplementary
+
+
+
+
+
+
 ```
 
