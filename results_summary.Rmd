@@ -424,9 +424,9 @@ percentages
 ```{r,dataframe_years}
 
 years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
-gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
-gene_name_errors_years<-cbind(years,gene_name_errors_years)
-colnames(gene_name_errors_years)<-c(" ",
+df_gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
+df_gene_name_errors_years<-cbind(years,gene_name_errors_years)
+colnames(df_gene_name_errors_years)<-c(" ",
   "PMC ID",
   "Excel files screened",
   "Excel files with gene lists",
@@ -436,13 +436,13 @@ colnames(gene_name_errors_years)<-c(" ",
   "False positive publications",
   "Affected XLS files",
   "Affected publications",
-  "Proportion of publications affected")
+  "Proportion of publications affected",
+  "percentages")
 
-df_gene_name_errors_years<-
-  gene_name_errors_years%>%
+  df_gene_name_errors_years%>%
   kbl() %>%
   kable_paper("hover", full_width = F)
-df_gene_name_errors_years
+
 ```
 
 
@@ -623,11 +623,10 @@ colnames(gene_name_errors_species)<-c("Species",
   "Affected publications",
   "Propotion of papers affected")
 
-df_gene_name_errors_species<-
   gene_name_errors_species%>%
   kbl() %>%
   kable_paper("hover", full_width = F)
-df_gene_name_errors_species
+
 ```
 
 
@@ -636,13 +635,85 @@ df_gene_name_errors_species
 ```{r,gene_name_errors_journal}
 
 #journals index in PMC
+j2014<-read.table("pmc/genom/pmc_journal2014genom.out.txt")
+head(j2014)
+j2015<-read.table("pmc/genom/pmc_journal2015genom.out.txt")
+j2016<-read.table("pmc/genom/pmc_journal2016genom.out.txt")
+j2017<-read.table("pmc/genom/pmc_journal2017genom.out.txt")
+j2018<-read.table("pmc/genom/pmc_journal2018genom.out.txt")
+j2019<-read.table("pmc/genom/pmc_journal2019genom.out.txt")
+j2020<-read.table("pmc/genom/pmc_journal2020genom.out.txt")
+jdf<-rbind(j2014,j2015,j2016,j2017,j2018,j2019,j2020)
+head(jdf)
+length(unique(jdf[,2]))
+       
+#journals published one or more supplementary Excel gene lists
 
+res2014_xlg<-res2014_l[which(lapply(res2014_l,length)>2)]
+res2014_p<-unique(sapply(res2014_xlg,"[[",1))
+
+res2015_xlg<-res2015_l[which(lapply(res2015_l,length)>2)]
+res2015_p<-unique(sapply(res2015_xlg,"[[",1))
+
+res2016_xlg<-res2016_l[which(lapply(res2016_l,length)>2)]
+res2016_p<-unique(sapply(res2016_xlg,"[[",1))
+
+res2017_xlg<-res2017_l[which(lapply(res2017_l,length)>2)]
+res2017_p<-unique(sapply(res2017_xlg,"[[",1))
+
+res2018_xlg<-res2018_l[which(lapply(res2018_l,length)>2)]
+res2018_p<-unique(sapply(res2018_xlg,"[[",1))
+
+res2019_xlg<-res2019_l[which(lapply(res2019_l,length)>2)]
+res2019_p<-unique(sapply(res2019_xlg,"[[",1))
+
+res2020_xlg<-res2020_l[which(lapply(res2020_l,length)>2)]
+res2020_p<-unique(sapply(res2020_xlg,"[[",1))
+
+res_p<-unique(c(res2014_p,res2015_p,res2016_p,res2017_p,res2018_p,res2019_p,res2020_p))
+head(res_p)
+
+jdf_subset<-jdf[which(jdf[,1] %in% res_p),]
+length(unique(jdf_subset[,2]))
+head(jdf)
 
 #journals with supplementary files
 journal_supplementary<-length(unique(affected_xls$V3))
 journal_supplementary
 
 
+jdf<-unique(jdf)
+head(jdf)
+jdf_t<-table(jdf[,2])
+head(jdf_t)
+jdf_t_df<-as.data.frame(jdf_t)
+head(jdf_t_df)
+
+
+#
+jres<-unique(affected_xls[,c(1,3)])
+j_table<-table(jres[,2])
+j_table_df<-as.data.frame(j_table)
+head(j_table_df)
+
+jj<-merge(jdf_t_df,j_table_df,by="Var1")
+colnames(jj)<-c("journal",
+  "Number of papers with Excel gene lists",
+"Number of affected papers")
+
+
+jj$`Proportion of papers affected`<-signif(jj[,3]/jj[,2]*100,3)
+head(jj)
+
+jjf<-jj[which(jj[,2]>49),]
+dim(jjf)
+dim(jj)
+head(jjf)
+
+jjf<-jjf[order(-jjf[,3]),]
+
+jjf %>% kbl() %>%
+  kable_paper("hover", full_width = F)
 
 
 
