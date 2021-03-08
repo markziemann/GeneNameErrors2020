@@ -373,6 +373,7 @@ affected_pub_2019
 
 ## affected pub for 2020
 pub_2020<-subset(affected_xls[affected_xls$V4==2020,])
+head(pub_2020)
 affected_pub_2020<-length(unique(pub_2020$V1))
 affected_pub_2020
 
@@ -425,7 +426,8 @@ percentages
 
 years<-c("2014","2015","2016","2017","2018","2019","2020","Total")
 df_gene_name_errors_years<-data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
-df_gene_name_errors_years<-cbind(years,gene_name_errors_years)
+df_gene_name_errors_years<-cbind(years,df_gene_name_errors_years)
+
 colnames(df_gene_name_errors_years)<-c(" ",
   "PMC ID",
   "Excel files screened",
@@ -436,8 +438,7 @@ colnames(df_gene_name_errors_years)<-c(" ",
   "False positive publications",
   "Affected XLS files",
   "Affected publications",
-  "Proportion of publications affected",
-  "percentages")
+  "Proportion of publications affected")
 
   df_gene_name_errors_years%>%
   kbl() %>%
@@ -448,8 +449,9 @@ colnames(df_gene_name_errors_years)<-c(" ",
 
 ```{r,plots1,fig.height=9,fig.width=6}
 par(mfrow=c(3,1))
-#barplot forPublications with Excel gene lists
-df<-gene_name_errors_years
+#barplot for Publications with Excel gene lists
+df<-df_gene_name_errors_years
+df
 df<-df[1:(nrow(df)-1),]
 head(df)
 colnames(df)
@@ -460,7 +462,7 @@ grid(nx=0,ny=5,col = "gray")
 barplot(df[,10],names.arg = df[,1],ylab="Affected publications",ylim = c(0,800))
 grid(nx=0,ny=8,col = "gray")
 
-#barplot for Proportion of publications affected
+#Line diagram for Proportion of publications affected
 plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "",ylim = c(0,35),type = "b",pch=19,bty="n")
 grid()
 ```
@@ -649,8 +651,10 @@ length(unique(jdf[,2]))
        
 #journals published one or more supplementary Excel gene lists
 
+res2014_l
 res2014_xlg<-res2014_l[which(lapply(res2014_l,length)>2)]
 res2014_p<-unique(sapply(res2014_xlg,"[[",1))
+head(res2014_p)
 
 res2015_xlg<-res2015_l[which(lapply(res2015_l,length)>2)]
 res2015_p<-unique(sapply(res2015_xlg,"[[",1))
@@ -677,11 +681,12 @@ jdf_subset<-jdf[which(jdf[,1] %in% res_p),]
 length(unique(jdf_subset[,2]))
 head(jdf)
 
-#journals with supplementary files
+#journals with gene name errors in the supplementary files
 journal_supplementary<-length(unique(affected_xls$V3))
 journal_supplementary
 
 
+# Number of papers with excel gene list
 jdf<-unique(jdf)
 head(jdf)
 jdf_t<-table(jdf[,2])
@@ -690,11 +695,14 @@ jdf_t_df<-as.data.frame(jdf_t)
 head(jdf_t_df)
 
 
-#
+# Number of affected papers 
 jres<-unique(affected_xls[,c(1,3)])
+head(jres)
 j_table<-table(jres[,2])
 j_table_df<-as.data.frame(j_table)
 head(j_table_df)
+
+# table content for gene name errors by journal 
 
 jj<-merge(jdf_t_df,j_table_df,by="Var1")
 colnames(jj)<-c("journal",
@@ -715,8 +723,379 @@ jjf<-jjf[order(-jjf[,3]),]
 jjf %>% kbl() %>%
   kable_paper("hover", full_width = F)
 
+```
+
+```{r,plot2,fig.height=9,fig.width=6}
+par(mfrow=c(3,1))
 
 
+# Top journals which compose of more than 100 gene name errors papers from 2014 to 2020
+
+## Nature communication
+
+#Nat_Commun(2014)
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+Nat_Commun_2014<-nrow(subset(aj2014[aj2014$V3=="Nat_Commun",]))
+Nat_Commun_2014
+
+#Nat_Commun(2015)
+head(pub_2015)
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+Nat_Commun_2015<-nrow(subset(aj2015[aj2015$V3=="Nat_Commun",]))
+Nat_Commun_2015
+
+
+#Nat_Commun(2016)
+head(pub_2016)
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+Nat_Commun_2016<-nrow(subset(aj2016[aj2016$V3=="Nat_Commun",]))
+Nat_Commun_2016
+
+
+#Nat_Commun(2017)
+head(pub_2017)
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+Nat_Commun_2017<-nrow(subset(aj2017[aj2017$V3=="Nat_Commun",]))
+Nat_Commun_2017
+
+
+#Nat_Commun(2018)
+head(pub_2018)
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+Nat_Commun_2018<-nrow(subset(aj2018[aj2018$V3=="Nat_Commun",]))
+Nat_Commun_2018
+
+
+#Nat_Commun(2019)
+head(pub_2019)
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+Nat_Commun_2019<-nrow(subset(aj2019[aj2019$V3=="Nat_Commun",]))
+Nat_Commun_2019
+
+
+#Nat_Commun(2020)
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+Nat_Commun_2020<-nrow(subset(aj2020[aj2020$V3=="Nat_Commun",]))
+Nat_Commun_2020
+
+
+## PLoS_One
+
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+PLoS_One_2014<-nrow(subset(aj2014[aj2014$V3=="PLoS_One",]))
+PLoS_One_2014
+
+
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+PLoS_One_2015<-nrow(subset(aj2015[aj2015$V3=="PLoS_One",]))
+PLoS_One_2015
+
+
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+PLoS_One_2016<-nrow(subset(aj2016[aj2016$V3=="PLoS_One",]))
+PLoS_One_2016
+
+
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+PLoS_One_2017<-nrow(subset(aj2017[aj2017$V3=="PLoS_One",]))
+PLoS_One_2017
+
+
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+PLoS_One_2018<-nrow(subset(aj2018[aj2018$V3=="PLoS_One",]))
+PLoS_One_2018
+
+
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+PLoS_One_2019<-nrow(subset(aj2019[aj2019$V3=="PLoS_One",]))
+PLoS_One_2019
+
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+PLoS_One_2020<-nrow(subset(aj2020[aj2020$V3=="PLoS_One",]))
+PLoS_One_2020
+
+
+## Sci_Rep
+
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+Sci_Rep_2014<-nrow(subset(aj2014[aj2014$V3=="Sci_Rep",]))
+Sci_Rep_2014
+
+
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+Sci_Rep_2015<-nrow(subset(aj2015[aj2015$V3=="Sci_Rep",]))
+Sci_Rep_2015
+
+
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+Sci_Rep_2016<-nrow(subset(aj2016[aj2016$V3=="Sci_Rep",]))
+Sci_Rep_2016
+
+
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+Sci_Rep_2017<-nrow(subset(aj2017[aj2017$V3=="Sci_Rep",]))
+Sci_Rep_2017
+
+
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+Sci_Rep_2018<-nrow(subset(aj2018[aj2018$V3=="Sci_Rep",]))
+Sci_Rep_2018
+
+
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+Sci_Rep_2019<-nrow(subset(aj2019[aj2019$V3=="Sci_Rep",]))
+Sci_Rep_2019
+
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+Sci_Rep_2020<-nrow(subset(aj2020[aj2020$V3=="Sci_Rep",]))
+Sci_Rep_2020
+
+## BMC_Genomics
+
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+BMC_Genomics_2014<-nrow(subset(aj2014[aj2014$V3=="BMC_Genomics",]))
+BMC_Genomics_2014
+
+
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+BMC_Genomics_2015<-nrow(subset(aj2015[aj2015$V3=="BMC_Genomics",]))
+BMC_Genomics_2015
+
+
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+BMC_Genomics_2016<-nrow(subset(aj2016[aj2016$V3=="BMC_Genomics",]))
+BMC_Genomics_2016
+
+
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+BMC_Genomics_2017<-nrow(subset(aj2017[aj2017$V3=="BMC_Genomics",]))
+BMC_Genomics_2017
+
+
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+BMC_Genomics_2018<-nrow(subset(aj2018[aj2018$V3=="BMC_Genomics",]))
+BMC_Genomics_2018
+
+
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+BMC_Genomics_2019<-nrow(subset(aj2019[aj2019$V3=="BMC_Genomics",]))
+BMC_Genomics_2019
+
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+BMC_Genomics_2020<-nrow(subset(aj2020[aj2020$V3=="BMC_Genomics",]))
+BMC_Genomics_2020
+
+
+
+## PLoS_Genet
+
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+PLoS_Genet_2014<-nrow(subset(aj2014[aj2014$V3=="PLoS_Genet",]))
+PLoS_Genet_2014
+
+
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+PLoS_Genet_2015<-nrow(subset(aj2015[aj2015$V3=="PLoS_Genet",]))
+PLoS_Genet_2015
+
+
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+PLoS_Genet_2016<-nrow(subset(aj2016[aj2016$V3=="PLoS_Genet",]))
+PLoS_Genet_2016
+
+
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+PLoS_Genet_2017<-nrow(subset(aj2017[aj2017$V3=="PLoS_Genet",]))
+PLoS_Genet_2017
+
+
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+PLoS_Genet_2018<-nrow(subset(aj2018[aj2018$V3=="PLoS_Genet",]))
+PLoS_Genet_2018
+
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+PLoS_Genet_2019<-nrow(subset(aj2019[aj2019$V3=="PLoS_Genet",]))
+PLoS_Genet_2019
+
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+PLoS_Genet_2020<-nrow(subset(aj2020[aj2020$V3=="PLoS_Genet",]))
+PLoS_Genet_2020
+
+
+## Oncotarget
+
+head(pub_2014)
+aj2014<-unique(pub_2014[,c(1,3)])
+aj2014
+Oncotarget_2014<-nrow(subset(aj2014[aj2014$V3=="Oncotarget",]))
+Oncotarget_2014
+
+
+aj2015<-unique(pub_2015[,c(1,3)])
+aj2015
+Oncotarget_2015<-nrow(subset(aj2015[aj2015$V3=="Oncotarget",]))
+Oncotarget_2015
+
+
+aj2016<-unique(pub_2016[,c(1,3)])
+aj2016
+Oncotarget_2016<-nrow(subset(aj2016[aj2016$V3=="Oncotarget",]))
+Oncotarget_2016
+
+
+aj2017<-unique(pub_2017[,c(1,3)])
+aj2017
+Oncotarget_2017<-nrow(subset(aj2017[aj2017$V3=="Oncotarget",]))
+Oncotarget_2017
+
+
+aj2018<-unique(pub_2018[,c(1,3)])
+aj2018
+Oncotarget_2018<-nrow(subset(aj2018[aj2018$V3=="Oncotarget",]))
+Oncotarget_2018
+
+aj2019<-unique(pub_2019[,c(1,3)])
+aj2019
+Oncotarget_2019<-nrow(subset(aj2019[aj2019$V3=="Oncotarget",]))
+Oncotarget_2019
+
+head(pub_2020)
+aj2020<-unique(pub_2020[,c(1,3)])
+aj2020
+Oncotarget_2020<-nrow(subset(aj2020[aj2020$V3=="Oncotarget",]))
+Oncotarget_2020
+
+#line diagram 
+years<-c("2014","2015","2016","2017","2018","2019","2020")
+oncotarget<-rbind(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
+
+years<-c("2014","2015","2016","2017","2018","2019","2020")
+
+```
+
+
+
+
+
+
+
+```{r,journals error papers in refernce to yearly basis}
+aj2014_tab<-table(aj2014[,2])
+head(aj2014_tab)
+
+aj2015<-unique(pub_2015[,c(1,3)])
+head(aj2015)
+aj2015_tab<-table(aj2015[,2])
+head(aj2015_tab)
+
+aj2016<-unique(pub_2016[,c(1,3)])
+head(aj2016)
+aj2016_tab<-table(aj2016[,2])
+head(aj2016_tab)
+
+aj2017<-unique(pub_2017[,c(1,3)])
+head(aj2017)
+aj2017_tab<-table(aj2017[,2])
+head(aj2017_tab)
+
+aj2018<-unique(pub_2018[,c(1,3)])
+head(aj2018)
+aj2018_tab<-table(aj2018[,2])
+head(aj2018_tab)
+
+aj2019<-unique(pub_2019[,c(1,3)])
+head(aj2019)
+aj2019_tab<-table(aj2019[,2])
+head(aj2019_tab)
+
+aj2020<-unique(pub_2020[,c(1,3)])
+head(aj2020)
+aj2020_tab<-table(aj2020[,2])
+head(aj2020_tab)
+aj2020_df<-as.data.frame(aj2020_tab)
+aj2020_j<-aj2020_df[which(aj2020_df[,2]>10),]
+aj2020_j_dsc<-aj2020_df[order(-aj2020_df[,2]),]
+aj2020_j_dsc
+
+aj2019_df<-as.data.frame(aj2019_tab)
+aj2019_j<-aj2019_df[which(aj2019_df[,2]>10),]
+aj2019_j_dsc<-aj2019_df[order(-aj2019_df[,2]),]
+aj2019_j_dsc
+
+aj2018_df<-as.data.frame(aj2018_tab)
+aj2018_j<-aj2018_df[which(aj2018_df[,2]>10),]
+aj2018_j_dsc<-aj2018_df[order(-aj2018_df[,2]),]
+aj2018_j_dsc
+
+aj2017_df<-as.data.frame(aj2017_tab)
+aj2017_j<-aj2017_df[which(aj2017_df[,2]>10),]
+aj2017_j_dsc<-aj2017_df[order(-aj2017_df[,2]),]
+aj2017_j_dsc
+
+aj2016_df<-as.data.frame(aj2016_tab)
+aj2016_j<-aj2016_df[which(aj2016_df[,2]>10),]
+aj2016_j_dsc<-aj2016_df[order(-aj2016_df[,2]),]
+aj2016_j_dsc
+
+aj2015_df<-as.data.frame(aj2015_tab)
+aj2015_j<-aj2015_df[which(aj2015_df[,2]>10),]
+aj2015_j_dsc<-aj2015_df[order(-aj2015_df[,2]),]
+aj2015_j_dsc
+
+aj2014_df<-as.data.frame(aj2014_tab)
+aj2014_j<-aj2014_df[which(aj2014_df[,2]>10),]
+aj2014_j_dsc<-aj2014_df[order(-aj2014_df[,2]),]
+aj2014_j_dsc
+
+aj2020_df<-as.data.frame(aj2020_tab)
+aj2020_j<-aj2020_df[which(aj2020_df[,2]>10),]
+aj2020_j_dsc<-aj2020_df[order(-aj2020_df[,2]),]
+aj2020_j_dsc
 
 ```
 
