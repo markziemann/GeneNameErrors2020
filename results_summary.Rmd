@@ -725,22 +725,19 @@ jjf %>% kbl() %>%
 
 ```
 
-```{r,plot2,fig.height=9,fig.width=6}
+```{r,top journals with more than 100 gene name errors papers from 2014 to 2020}
 par(mfrow=c(3,1))
 
+# Nature communication
 
-# Top journals which compose of more than 100 gene name errors papers from 2014 to 2020
-
-## Nature communication
-
-#Nat_Commun(2014)
+## Nat_Commun(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
 Nat_Commun_2014<-nrow(subset(aj2014[aj2014$V3=="Nat_Commun",]))
 Nat_Commun_2014
 
-#Nat_Commun(2015)
+## Nat_Commun(2015)
 head(pub_2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
@@ -748,7 +745,7 @@ Nat_Commun_2015<-nrow(subset(aj2015[aj2015$V3=="Nat_Commun",]))
 Nat_Commun_2015
 
 
-#Nat_Commun(2016)
+## Nat_Commun(2016)
 head(pub_2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
@@ -756,7 +753,7 @@ Nat_Commun_2016<-nrow(subset(aj2016[aj2016$V3=="Nat_Commun",]))
 Nat_Commun_2016
 
 
-#Nat_Commun(2017)
+## Nat_Commun(2017)
 head(pub_2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
@@ -764,7 +761,7 @@ Nat_Commun_2017<-nrow(subset(aj2017[aj2017$V3=="Nat_Commun",]))
 Nat_Commun_2017
 
 
-#Nat_Commun(2018)
+## Nat_Commun(2018)
 head(pub_2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
@@ -772,7 +769,7 @@ Nat_Commun_2018<-nrow(subset(aj2018[aj2018$V3=="Nat_Commun",]))
 Nat_Commun_2018
 
 
-#Nat_Commun(2019)
+## Nat_Commun(2019)
 head(pub_2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
@@ -780,7 +777,7 @@ Nat_Commun_2019<-nrow(subset(aj2019[aj2019$V3=="Nat_Commun",]))
 Nat_Commun_2019
 
 
-#Nat_Commun(2020)
+## Nat_Commun(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
@@ -788,44 +785,46 @@ Nat_Commun_2020<-nrow(subset(aj2020[aj2020$V3=="Nat_Commun",]))
 Nat_Commun_2020
 
 
-## PLoS_One
+# PLoS_One
 
+## PLoS_One(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
 PLoS_One_2014<-nrow(subset(aj2014[aj2014$V3=="PLoS_One",]))
 PLoS_One_2014
 
-
+## PLoS_One(2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
 PLoS_One_2015<-nrow(subset(aj2015[aj2015$V3=="PLoS_One",]))
 PLoS_One_2015
 
-
+## PLoS_One(2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
 PLoS_One_2016<-nrow(subset(aj2016[aj2016$V3=="PLoS_One",]))
 PLoS_One_2016
 
-
+## PLoS_One(2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
 PLoS_One_2017<-nrow(subset(aj2017[aj2017$V3=="PLoS_One",]))
 PLoS_One_2017
 
-
+## PLoS_One(2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
 PLoS_One_2018<-nrow(subset(aj2018[aj2018$V3=="PLoS_One",]))
 PLoS_One_2018
 
-
+## PLoS_One(2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
 PLoS_One_2019<-nrow(subset(aj2019[aj2019$V3=="PLoS_One",]))
 PLoS_One_2019
 
+## PLoS_One(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
@@ -833,88 +832,99 @@ PLoS_One_2020<-nrow(subset(aj2020[aj2020$V3=="PLoS_One",]))
 PLoS_One_2020
 
 
-## Sci_Rep
+# Sci_Rep
 
+
+## Sci_Rep(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
 Sci_Rep_2014<-nrow(subset(aj2014[aj2014$V3=="Sci_Rep",]))
 Sci_Rep_2014
 
-
+## Sci_Rep(2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
 Sci_Rep_2015<-nrow(subset(aj2015[aj2015$V3=="Sci_Rep",]))
 Sci_Rep_2015
 
-
+## Sci_Rep(2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
 Sci_Rep_2016<-nrow(subset(aj2016[aj2016$V3=="Sci_Rep",]))
 Sci_Rep_2016
 
-
+## Sci_Rep(2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
 Sci_Rep_2017<-nrow(subset(aj2017[aj2017$V3=="Sci_Rep",]))
 Sci_Rep_2017
 
-
+## Sci_Rep(2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
 Sci_Rep_2018<-nrow(subset(aj2018[aj2018$V3=="Sci_Rep",]))
 Sci_Rep_2018
 
-
+## Sci_Rep(2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
 Sci_Rep_2019<-nrow(subset(aj2019[aj2019$V3=="Sci_Rep",]))
 Sci_Rep_2019
 
+
+## Sci_Rep(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
 Sci_Rep_2020<-nrow(subset(aj2020[aj2020$V3=="Sci_Rep",]))
 Sci_Rep_2020
 
-## BMC_Genomics
+# BMC_Genomics
 
+
+## BMC_Genomics(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
 BMC_Genomics_2014<-nrow(subset(aj2014[aj2014$V3=="BMC_Genomics",]))
 BMC_Genomics_2014
 
-
+## BMC_Genomics(2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
 BMC_Genomics_2015<-nrow(subset(aj2015[aj2015$V3=="BMC_Genomics",]))
 BMC_Genomics_2015
 
-
+## BMC_Genomics(2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
 BMC_Genomics_2016<-nrow(subset(aj2016[aj2016$V3=="BMC_Genomics",]))
 BMC_Genomics_2016
 
 
+## BMC_Genomics(2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
 BMC_Genomics_2017<-nrow(subset(aj2017[aj2017$V3=="BMC_Genomics",]))
 BMC_Genomics_2017
 
 
+## BMC_Genomics(2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
 BMC_Genomics_2018<-nrow(subset(aj2018[aj2018$V3=="BMC_Genomics",]))
 BMC_Genomics_2018
 
 
+## BMC_Genomics(2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
 BMC_Genomics_2019<-nrow(subset(aj2019[aj2019$V3=="BMC_Genomics",]))
 BMC_Genomics_2019
 
+
+## BMC_Genomics(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
@@ -923,8 +933,10 @@ BMC_Genomics_2020
 
 
 
-## PLoS_Genet
+# PLoS_Genet
 
+
+## PLoS_Genet(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
@@ -932,34 +944,42 @@ PLoS_Genet_2014<-nrow(subset(aj2014[aj2014$V3=="PLoS_Genet",]))
 PLoS_Genet_2014
 
 
+## PLoS_Genet(2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
 PLoS_Genet_2015<-nrow(subset(aj2015[aj2015$V3=="PLoS_Genet",]))
 PLoS_Genet_2015
 
 
+## PLoS_Genet(2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
 PLoS_Genet_2016<-nrow(subset(aj2016[aj2016$V3=="PLoS_Genet",]))
 PLoS_Genet_2016
 
 
+## PLoS_Genet(2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
 PLoS_Genet_2017<-nrow(subset(aj2017[aj2017$V3=="PLoS_Genet",]))
 PLoS_Genet_2017
 
 
+## PLoS_Genet(2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
 PLoS_Genet_2018<-nrow(subset(aj2018[aj2018$V3=="PLoS_Genet",]))
 PLoS_Genet_2018
 
+
+## PLoS_Genet(2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
 PLoS_Genet_2019<-nrow(subset(aj2019[aj2019$V3=="PLoS_Genet",]))
 PLoS_Genet_2019
 
+
+## PLoS_Genet(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
@@ -967,62 +987,115 @@ PLoS_Genet_2020<-nrow(subset(aj2020[aj2020$V3=="PLoS_Genet",]))
 PLoS_Genet_2020
 
 
-## Oncotarget
+# Oncotarget
 
+## Oncotarget(2014)
 head(pub_2014)
 aj2014<-unique(pub_2014[,c(1,3)])
 aj2014
 Oncotarget_2014<-nrow(subset(aj2014[aj2014$V3=="Oncotarget",]))
 Oncotarget_2014
 
-
+## Oncotarget(2015)
 aj2015<-unique(pub_2015[,c(1,3)])
 aj2015
 Oncotarget_2015<-nrow(subset(aj2015[aj2015$V3=="Oncotarget",]))
 Oncotarget_2015
 
-
+## Oncotarget(2016)
 aj2016<-unique(pub_2016[,c(1,3)])
 aj2016
 Oncotarget_2016<-nrow(subset(aj2016[aj2016$V3=="Oncotarget",]))
 Oncotarget_2016
 
-
+## Oncotarget(2017)
 aj2017<-unique(pub_2017[,c(1,3)])
 aj2017
 Oncotarget_2017<-nrow(subset(aj2017[aj2017$V3=="Oncotarget",]))
 Oncotarget_2017
 
 
+## Oncotarget(2018)
 aj2018<-unique(pub_2018[,c(1,3)])
 aj2018
 Oncotarget_2018<-nrow(subset(aj2018[aj2018$V3=="Oncotarget",]))
 Oncotarget_2018
 
+
+## Oncotarget(2019)
 aj2019<-unique(pub_2019[,c(1,3)])
 aj2019
 Oncotarget_2019<-nrow(subset(aj2019[aj2019$V3=="Oncotarget",]))
 Oncotarget_2019
 
+
+## Oncotarget(2020)
 head(pub_2020)
 aj2020<-unique(pub_2020[,c(1,3)])
 aj2020
 Oncotarget_2020<-nrow(subset(aj2020[aj2020$V3=="Oncotarget",]))
 Oncotarget_2020
 
-#line diagram 
-years<-c("2014","2015","2016","2017","2018","2019","2020")
-oncotarget<-rbind(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
-
-years<-c("2014","2015","2016","2017","2018","2019","2020")
-
 ```
 
+``````{r,plot2,fig.height=9,fig.width=6}
+par(mfrow=c(3,1))
+
+# line diagrams on the number of gene name error papers published by  journal per year
+
+## Nature communication
+
+years<-c("2014","2015","2016","2017","2018","2019","2020")
+nat<-c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,Nat_Commun_2017,Nat_Commun_2018,Nat_Commun_2019,Nat_Commun_2020)
+df_Nat_Commun<-data.frame(years,nat)
+
+plot(df_Nat_Commun,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in Nature Communication from 2014 to 2020",cex.main=1)
+grid()
+
+## PLOS ONE
+
+plos_one<-c(PLoS_One_2014,PLoS_One_2015,PLoS_One_2016,PLoS_One_2017,PLoS_One_2018,PLoS_One_2019,PLoS_One_2020)
+df_plos_one<-data.frame(years,plos_one)
+
+plot(df_plos_one,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in PLOS ONE from 2014 to 2020",cex.main=1)
+grid()
 
 
+## Scientific Reports
+
+sci_rep<-c(Sci_Rep_2014,Sci_Rep_2015,Sci_Rep_2016,Sci_Rep_2017,Sci_Rep_2018,Sci_Rep_2019,Sci_Rep_2020)
+df_sci_rep<-data.frame(years,sci_rep)
+
+plot(df_sci_rep,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in Scientific Reports from 2014 to 2020",cex.main=1)
+grid()
 
 
+## BMC_Genomics
 
+bmc<-c(BMC_Genomics_2014,BMC_Genomics_2015,BMC_Genomics_2016,BMC_Genomics_2017,BMC_Genomics_2018,BMC_Genomics_2019,BMC_Genomics_2020)
+df_bmc<-data.frame(years,bmc)
+
+plot(df_bmc,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in BMC_Genomics from 2014 to 2020",cex.main=1)
+grid()
+
+## PLoS Genetics
+
+plos_genet<-c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,PLoS_Genet_2017,PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
+df_plos_genet<-data.frame(years,plos_genet)
+
+plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,80),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
+grid()
+
+## Oncotarget
+
+onco<-c(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
+df_oncotarget<-data.frame(years,onco)
+
+plot(df_oncotarget,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in oncotarget from 2014 to 2020",cex.main=1)
+grid()
+
+
+```
 
 ```{r,journals error papers in refernce to yearly basis}
 aj2014_tab<-table(aj2014[,2])
