@@ -449,6 +449,8 @@ colnames(df_gene_name_errors_years)<-c(" ",
 
 ```{r,plots1,fig.height=9,fig.width=6}
 par(mfrow=c(3,1))
+
+pdf("fig1.pdf") 
 #barplot for Publications with Excel gene lists
 df<-df_gene_name_errors_years
 df
@@ -465,6 +467,7 @@ grid(nx=0,ny=8,col = "gray")
 #Line diagram for Proportion of publications affected
 plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "",ylim = c(0,35),type = "b",pch=19,bty="n")
 grid()
+dev.off()
 ```
 
 ```{r,gene_name_errors_organism}
@@ -1040,6 +1043,7 @@ Oncotarget_2020
 
 ``````{r,plot2,fig.height=9,fig.width=6}
 par(mfrow=c(3,1))
+pdf("fig2.pdf") 
 
 # line diagrams on the number of gene name error papers published by  journal per year
 
@@ -1094,8 +1098,75 @@ df_oncotarget<-data.frame(years,onco)
 plot(df_oncotarget,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in oncotarget from 2014 to 2020",cex.main=1)
 grid()
 
-
+dev.off()
 ```
+``````{r,plot3,fig.height=9,fig.width=6}
+par(mfrow=c(3,1))
+
+# Bar plots on the number of gene name error papers published by  journal per year
+
+## Nature communication
+
+years<-c("2014","2015","2016","2017","2018","2019","2020")
+nat<-c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,Nat_Commun_2017,Nat_Commun_2018,Nat_Commun_2019,Nat_Commun_2020)
+df_Nat_Commun<-data.frame(years,nat)
+
+plot(df_Nat_Commun,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in Nature Communication from 2014 to 2020",cex.main=1)
+grid()
+
+## PLOS ONE
+
+plos_one<-c(PLoS_One_2014,PLoS_One_2015,PLoS_One_2016,PLoS_One_2017,PLoS_One_2018,PLoS_One_2019,PLoS_One_2020)
+df_plos_one<-data.frame(years,plos_one)
+
+plot(df_plos_one,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in PLOS ONE from 2014 to 2020",cex.main=1)
+grid()
+
+
+## Scientific Reports
+
+sci_rep<-c(Sci_Rep_2014,Sci_Rep_2015,Sci_Rep_2016,Sci_Rep_2017,Sci_Rep_2018,Sci_Rep_2019,Sci_Rep_2020)
+df_sci_rep<-data.frame(years,sci_rep)
+
+plot(df_sci_rep,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,100),type="b",pch=19,bty="n",main="Papers with gene name erros in Scientific Reports from 2014 to 2020",cex.main=1)
+grid()
+
+
+## BMC_Genomics
+
+bmc<-c(BMC_Genomics_2014,BMC_Genomics_2015,BMC_Genomics_2016,BMC_Genomics_2017,BMC_Genomics_2018,BMC_Genomics_2019,BMC_Genomics_2020)
+df_bmc<-data.frame(years,bmc)
+
+plot(df_bmc,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in BMC_Genomics from 2014 to 2020",cex.main=1)
+grid()
+
+## PLoS Genetics
+
+plos_genet<-c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,PLoS_Genet_2017,PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
+df_plos_genet<-data.frame(years,plos_genet)
+
+plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,80),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
+grid()
+
+## Oncotarget
+
+onco<-c(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
+str(onco)
+
+df_oncotarget<-data.frame(years,onco)
+
+df_oncotarget[1]
+
+barplot(nat[,7],names.arg = nat[,1],ylab="Affected publications",ylim = c(0,800))
+grid(nx=0,ny=8,col = "gray")
+
+
+
+
+grid(nx=0,ny=8,col = "gray")
+```
+
+
 
 ```{r,journals error papers in refernce to yearly basis}
 aj2014_tab<-table(aj2014[,2])
