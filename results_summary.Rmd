@@ -1155,15 +1155,8 @@ str(onco)
 
 df_oncotarget<-data.frame(years,onco)
 
-df_oncotarget[1]
-
-barplot(nat[,7],names.arg = nat[,1],ylab="Affected publications",ylim = c(0,800))
-grid(nx=0,ny=8,col = "gray")
-
-
-
-
-grid(nx=0,ny=8,col = "gray")
+plot(df_oncotarget,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,80),type="b",pch=19,bty="n",main="Papers with gene name erros in Oncotarget from 2014 to 2020",cex.main=1)
+grid()
 ```
 
 
