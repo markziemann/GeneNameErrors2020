@@ -448,9 +448,10 @@ colnames(df_gene_name_errors_years)<-c(" ",
 
 
 ```{r,plots1,fig.height=9,fig.width=6}
-par(mfrow=c(3,1))
+
 
 pdf("fig1.pdf") 
+par(mfrow=c(3,1))
 #barplot for Publications with Excel gene lists
 df<-df_gene_name_errors_years
 df
@@ -1042,9 +1043,8 @@ Oncotarget_2020
 ```
 
 ``````{r,plot2,fig.height=9,fig.width=6}
-par(mfrow=c(3,1))
 pdf("fig2.pdf") 
-
+par(mfrow=c(3,1))
 # line diagrams on the number of gene name error papers published by  journal per year
 
 ## Nature communication
@@ -1087,7 +1087,7 @@ grid()
 plos_genet<-c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,PLoS_Genet_2017,PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
 df_plos_genet<-data.frame(years,plos_genet)
 
-plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,80),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
+plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
 grid()
 
 ## Oncotarget
@@ -1145,7 +1145,7 @@ grid()
 plos_genet<-c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,PLoS_Genet_2017,PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
 df_plos_genet<-data.frame(years,plos_genet)
 
-plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,80),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
+plot(df_plos_genet,ylab="number of papers with gene name errors",xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",main="Papers with gene name erros in PLoS Genetics from 2014 to 2020",cex.main=1)
 grid()
 
 ## Oncotarget
