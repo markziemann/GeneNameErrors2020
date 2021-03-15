@@ -450,7 +450,7 @@ colnames(df_gene_name_errors_years)<-c(" ",
 ```{r,plots1,fig.height=9,fig.width=6}
 
 
-pdf("fig1.pdf") 
+pdf("fig1.pdf",width=4,height=7) 
 par(mfrow=c(3,1))
 #barplot for Publications with Excel gene lists
 df<-df_gene_name_errors_years
@@ -1043,7 +1043,8 @@ Oncotarget_2020
 ```
 
 ``````{r,plot2,fig.height=9,fig.width=6}
-pdf("fig2.pdf") 
+
+pdf("fig2.pdf",width=4,height=7) 
 par(mfrow=c(3,1))
 # line diagrams on the number of gene name error papers published by  journal per year
 
