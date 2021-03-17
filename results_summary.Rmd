@@ -1040,6 +1040,20 @@ head(aj2020_j_dsc,10)
 
 ```
 
+## Journal impact factor correlation
+
+Journal Citation Reports 2020 (Impact factor & Ranking of 2019).
+InCites Journal Citation Reports (Clarivate Analytics).
+
+```{r,jif}
+
+jifs <- read.table("jifs.tsv",header=TRUE)
+proportions <- jjf[,c(1,4)]
+myjifs <- merge(proportions, jifs, by.x="journal",by.y="Journal")
+cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`)
+cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`,method="s")
+
+```
 
 ## Session information
 
