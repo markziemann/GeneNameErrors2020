@@ -924,8 +924,7 @@ par(mfrow=c(3,1))
 
 ## Nature communication
 years <- c("2014","2015","2016","2017","2018","2019","2020")
-nat <- c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,Nat_Commun_2017,Nat_Commun_2018,
-  Nat_Commun_2019,Nat_Commun_2020)
+nat <- c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,Nat_Commun_2017,Nat_Commun_2018, Nat_Commun_2019,Nat_Commun_2020)
 df_Nat_Commun <- data.frame(years,nat)
 
 plot(df_Nat_Commun,ylab="number of articles with gene name errors",
@@ -986,7 +985,6 @@ grid()
 
 # line diagram for proportion of papers affected in top 6 journals with more than 100 gene name errors articles from 2014 to 2020
 df_propotion_of_artcle_affected<-unique(jjf[,c(1,4)])
-df_propotion_of_artcle_affected
 dff<-df_propotion_of_artcle_affected[1:6,]
 barplot(dff[,2],names.arg = dff[,1],ylab="proportion of papers affected in top 6 journals %",ylim = c(0,50),las=3)
 grid(nx=0,ny=1,col = "gray")
