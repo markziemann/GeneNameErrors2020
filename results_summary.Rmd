@@ -681,6 +681,8 @@ with gene name errors were counted and result was recorded.
 
 ```{r,top journals with more than 100 gene name errors articles from 2014 to 2020}
 
+years <- c("2014","2015","2016","2017","2018","2019","2020")
+
 aj2014 <- unique(pub_2014[,c(1,3)])
 aj2015 <- unique(pub_2015[,c(1,3)])
 aj2016 <- unique(pub_2016[,c(1,3)])
