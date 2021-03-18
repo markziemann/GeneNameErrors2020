@@ -532,6 +532,7 @@ barplot(df[,10],names.arg = df[,1],ylab="Affected publications",ylim = c(0,800))
 grid(nx=0,ny=8,col = "gray")
 
 #Line diagram for Proportion of publications affected
+
 plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "",ylim = c(0,35),type = "b",pch=19,bty="n")
 grid()
 ```
@@ -760,13 +761,7 @@ colnames(jj) <- c("journal",
   "Number of affected articles")
 
 jj$`Proportion of articles affected` <- signif(jj[,3]/jj[,2]*100,3)
-head(jj)
-
 jjf <- jj[which(jj[,2]>49),]
-dim(jjf)
-dim(jj)
-head(jjf)
-
 jjf <- jjf[order(-jjf[,3]),]
 
 jjf %>% kbl() %>%
@@ -914,10 +909,18 @@ plot(df_oncotarget,ylab="number of articles with gene name errors",
   main="Papers with gene name errors in oncotarget from 2014 to 2020",cex.main=1)
 grid()
 
+
+# Bar plot for proportion of papers affected in top 6 journals with more than 100 gene name errors articles from 2014 to 2020
+df_propotion_of_artcle_affected<-unique(jjf[,c(1,4)])
+df_propotion_of_artcle_affected
+dff<-df_propotion_of_artcle_affected[1:6,]
+barplot(dff[,2],names.arg = dff[,1],ylab="proportion of papers affected in top 6 journals %",ylim = c(0,50),las=3)
+grid(nx=0,ny=1,col = "gray")
+
 dev.off()
 
 par(mfrow=c(3,1))
-# Bar plots on the number of gene name error articles published by  journal per year
+# line diagrams on the number of gene name error articles published by  journal per yea
 
 ## Nature communication
 years <- c("2014","2015","2016","2017","2018","2019","2020")
@@ -951,7 +954,6 @@ plot(df_sci_rep,ylab="number of articles with gene name errors",
   main="Papers with gene name errors in Scientific Reports from 2014 to 2020",cex.main=1)
 grid()
 
-
 ## BMC_Genomics
 bmc <- c(BMC_Genomics_2014,BMC_Genomics_2015,BMC_Genomics_2016,
   BMC_Genomics_2017,BMC_Genomics_2018,BMC_Genomics_2019,BMC_Genomics_2020)
@@ -975,14 +977,19 @@ grid()
 ## Oncotarget
 onco <- c(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,
   Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
-str(onco)
-
 df_oncotarget <- data.frame(years,onco)
 
 plot(df_oncotarget,ylab="number of articles with gene name errors",
   xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",
   main="Papers with gene name errors in Oncotarget from 2014 to 2020",cex.main=1)
 grid()
+
+# line diagram for proportion of papers affected in top 6 journals with more than 100 gene name errors articles from 2014 to 2020
+df_propotion_of_artcle_affected<-unique(jjf[,c(1,4)])
+df_propotion_of_artcle_affected
+dff<-df_propotion_of_artcle_affected[1:6,]
+barplot(dff[,2],names.arg = dff[,1],ylab="proportion of papers affected in top 6 journals %",ylim = c(0,50),las=3)
+grid(nx=0,ny=1,col = "gray")
 ```
 
 ## Journals error articles in refernce to yearly basis
