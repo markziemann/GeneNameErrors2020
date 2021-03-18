@@ -987,7 +987,7 @@ grid()
 df_propotion_of_artcle_affected<-unique(jjf[,c(1,4)])
 dff<-df_propotion_of_artcle_affected[1:6,]
 barplot(dff[,2],names.arg = dff[,1],ylab="proportion of papers affected in top 6 journals %",ylim = c(0,50),las=3)
-grid(nx=0,ny=1,col = "gray")
+grid(nx=0,ny=0,col = "gray")
 ```
 
 ## Journals error articles in refernce to yearly basis
