@@ -706,6 +706,12 @@ nc_gl <- c(nrow(unique(subset(jdf2,V2=="Nat_Commun"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="Nat_Commun"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="Nat_Commun"&year=="2020"))))
 
+nc_df<- data.frame(years,nc_aff,nc_gl,signif(nc_aff/nc_gl*100,3))
+colnames(nc_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+nc_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+
 # PLoS_One
 po_aff <- c(nrow(subset(aj2014[aj2014$V3=="PLoS_One",])),
   nrow(subset(aj2015[aj2015$V3=="PLoS_One",])),
@@ -722,6 +728,12 @@ po_gl <- c(nrow(unique(subset(jdf2,V2=="PLoS_One"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="PLoS_One"&year=="2018"))),
   nrow(unique(subset(jdf2,V2=="PLoS_One"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="PLoS_One"&year=="2020"))))
+
+po_df<- data.frame(years,po_aff,po_gl,signif(po_aff/po_gl*100,3))
+colnames(po_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+po_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
 
 # Sci_Rep
 sr_aff <- c(nrow(subset(aj2014[aj2014$V3=="Sci_Rep",])),
@@ -740,6 +752,12 @@ sr_gl <- c(nrow(unique(subset(jdf2,V2=="Sci_Rep"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="Sci_Rep"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="Sci_Rep"&year=="2020"))))
 
+sr_df<- data.frame(years,sr_aff,sr_gl,signif(sr_aff/sr_gl*100,3))
+colnames(sr_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+sr_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+
 # BMC_Genomics
 bg_aff <- c(nrow(subset(aj2014[aj2014$V3=="BMC_Genomics",])),
   nrow(subset(aj2015[aj2015$V3=="BMC_Genomics",])),
@@ -756,6 +774,12 @@ bg_gl <- c(nrow(unique(subset(jdf2,V2=="BMC_Genomics"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="BMC_Genomics"&year=="2018"))),
   nrow(unique(subset(jdf2,V2=="BMC_Genomics"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="BMC_Genomics"&year=="2020"))))
+
+bg_df<- data.frame(years,bg_aff,bg_gl,signif(bg_aff/bg_gl*100,3))
+colnames(bg_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+bg_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
 
 # PLoS_Genet
 pg_aff <- c(nrow(subset(aj2014[aj2014$V3=="PLoS_Genet",])),
@@ -774,6 +798,12 @@ pg_gl <- c(nrow(unique(subset(jdf2,V2=="PLoS_Genet"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="PLoS_Genet"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="PLoS_Genet"&year=="2020"))))
 
+pg_df<- data.frame(years,pg_aff,pg_gl,signif(pg_aff/pg_gl*100,3))
+colnames(pg_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+pg_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+
 # Oncotarget
 ot_aff <- c(nrow(subset(aj2014[aj2014$V3=="Oncotarget",])),
   nrow(subset(aj2015[aj2015$V3=="Oncotarget",])),
@@ -791,6 +821,12 @@ ot_gl <- c(nrow(unique(subset(jdf2,V2=="Oncotarget"&year=="2014"))),
   nrow(unique(subset(jdf2,V2=="Oncotarget"&year=="2019"))),
   nrow(unique(subset(jdf2,V2=="Oncotarget"&year=="2020"))))
 
+ot_df<- data.frame(years,ot_aff,ot_gl,signif(ot_aff/ot_gl*100,3))
+colnames(ot_df) <- c("year","affected articles","articles with excel gene lists", "proportion of articles affected (%)")
+ot_df%>%
+  kbl() %>%
+  kable_paper("hover", full_width = F)
+
 ```
 
 ## Plots for figure 2 of the manuscript
@@ -802,12 +838,10 @@ Temporal trends for the six journals with most gene name errors from 2014 to
 
 years <- c("2014","2015","2016","2017","2018","2019","2020")
 
-
 par(mfrow=c(3,1))
 # line diagrams on the number of gene name error articles published by  journal per year
 
 ## Nature communication
-nc_df<- data.frame(years,nc_aff,nc_gl)
 barplot(nc_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Nature Communications")
 grid()
@@ -817,7 +851,6 @@ plot(x=nc_df[,1],y=nc_df[,2]/nc_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## PLOS ONE
-po_df<- data.frame(years,po_aff,po_gl)
 barplot(po_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="PLOS ONE")
 grid()
@@ -827,7 +860,6 @@ plot(x=po_df[,1],y=po_df[,2]/po_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## Scientific Reports
-sr_df<- data.frame(years,sr_aff,sr_gl)
 barplot(sr_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Scientific Reports")
 grid()
@@ -837,7 +869,6 @@ plot(x=sr_df[,1],y=sr_df[,2]/sr_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## BMC_Genomics
-bg_df<- data.frame(years,bg_aff,bg_gl)
 barplot(bg_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="BMC Genomics")
 grid()
@@ -847,7 +878,6 @@ plot(x=bg_df[,1],y=bg_df[,2]/bg_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## PLoS Genetics
-pg_df<- data.frame(years,pg_aff,pg_gl)
 barplot(pg_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="PLoS Genetics")
 grid()
@@ -857,7 +887,6 @@ plot(x=pg_df[,1],y=pg_df[,2]/pg_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## Oncotarget
-ot_df<- data.frame(years,ot_aff,ot_gl)
 barplot(ot_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Oncotarget")
 grid()
@@ -871,7 +900,6 @@ pdf("fig2.pdf",width=4,height=7)
 par(mfrow=c(3,1))
 
 ## Nature communication
-nc_df<- data.frame(years,nc_aff,nc_gl)
 barplot(nc_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Nature Communications")
 grid()
@@ -881,7 +909,6 @@ plot(x=nc_df[,1],y=nc_df[,2]/nc_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## PLOS ONE
-po_df<- data.frame(years,po_aff,po_gl)
 barplot(po_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="PLOS ONE")
 grid()
@@ -891,7 +918,6 @@ plot(x=po_df[,1],y=po_df[,2]/po_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## Scientific Reports
-sr_df<- data.frame(years,sr_aff,sr_gl)
 barplot(sr_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Scientific Reports")
 grid()
@@ -901,7 +927,6 @@ plot(x=sr_df[,1],y=sr_df[,2]/sr_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## BMC_Genomics
-bg_df<- data.frame(years,bg_aff,bg_gl)
 barplot(bg_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="BMC Genomics")
 grid()
@@ -911,7 +936,6 @@ plot(x=bg_df[,1],y=bg_df[,2]/bg_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## PLoS Genetics
-pg_df<- data.frame(years,pg_aff,pg_gl)
 barplot(pg_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="PLoS Genetics")
 grid()
@@ -921,7 +945,6 @@ plot(x=pg_df[,1],y=pg_df[,2]/pg_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## Oncotarget
-ot_df<- data.frame(years,ot_aff,ot_gl)
 barplot(ot_df[,3],ylab="Publications with Excel gene lists",xlab="",
   names.arg = years, main="Oncotarget")
 grid()
