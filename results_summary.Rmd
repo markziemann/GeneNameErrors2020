@@ -868,6 +868,7 @@ grid()
 
 ## now make the pdf
 pdf("fig2.pdf",width=4,height=7) 
+par(mfrow=c(3,1))
 
 ## Nature communication
 nc_df<- data.frame(years,nc_aff,nc_gl)
