@@ -18,64 +18,76 @@ options(bitmapType="cairo")
 ```
 
 ## Introduction
-
 We are passing the information from text file to figures that will be needed in the paper
 
-
 ## Number of publications 
-
+The number of publications available in each year from 2014 to 2020 in PUBMED CENTRAL.
+These publications were selected through a search in PubMed Central using the key word,"genom"
 ```{r,publication_amount read}
 
 pmc2014 <- read.table("pmc/genom/pmc2014.txt")
-head(pmc2014)
 pmc2014 <- nrow(pmc2014)
+pmc2014
 pmc2015 <- read.table("pmc/genom/pmc2015.txt")
 pmc2015 <- nrow(pmc2015)
+pmc2015
 pmc2016 <- read.table("pmc/genom/pmc2016.txt")
 pmc2016 <- nrow(pmc2016)
+pmc2016
 pmc2017 <- read.table("pmc/genom/pmc2017.txt")
 pmc2017 <- nrow(pmc2017)
+pmc2017
 pmc2018 <- read.table("pmc/genom/pmc2018.txt")
 pmc2018 <- nrow(pmc2018)
+pmc2018
 pmc2019 <- read.table("pmc/genom/pmc2019.txt")
 pmc2019 <- nrow(pmc2019)
+pmc2019
 pmc2020 <- read.table("pmc/genom/pmc2020.txt")
 pmc2020 <- nrow(pmc2020)
+pmc2020
 total_pmc <- sum(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020)
+total_pmc
 pmc <- c(pmc2014,pmc2015,pmc2016,pmc2017,pmc2018,pmc2019,pmc2020,total_pmc)
-
 ```
-
-
 ## Number of supplementary files
+The number of publications resulted from the "genom" keyword search from 2014 to 2020 was short listed where the publications with supplementary files were downloaded.
 
+These supplementary files were selected in a manner in which supplementary files compose of ".xls" or ".xlsx" suffixes were assumed to be supplementary excel files.
 ```{r,supplementary_files_amount}
 
 res2014 <- readLines("results/genom/results2014.txt")
-head(res2014)
 res2014_length <- length(unique(sapply(strsplit(res2014," "),"[[",1)))
+res2014_length
 res2015 <- readLines("results/genom/results2015.txt")
 res2015_length <- length(unique(sapply(strsplit(res2015," "),"[[",1)))
+res2015_length
 res2016 <- readLines("results/genom/results2016.txt")
 res2016_length <- length(unique(sapply(strsplit(res2016," "),"[[",1)))
+res2016_length
 res2017 <- readLines("results/genom/results2017.txt")
 res2017_length <- length(unique(sapply(strsplit(res2017," "),"[[",1)))
+res2017_length
 res2018 <- readLines("results/genom/results2018.txt")
 res2018_length <- length(unique(sapply(strsplit(res2018," "),"[[",1)))
+res2018_length
 res2019 <- readLines("results/genom/results2019.txt")
 res2019_length <- length(unique(sapply(strsplit(res2019," "),"[[",1)))
+res2019_length
 res2020 <- readLines("results/genom/results2020.txt")
 res2020_length <- length(unique(sapply(strsplit(res2020," "),"[[",1)))
+res2020_length
 total_res <- sum(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length)
-
+total_res
 res <- c(res2014_length,res2015_length,res2016_length,res2017_length,res2018_length,res2019_length,res2020_length,total_res)
-
 ```
+## Xls files with gene list 
+All the supplementary files downloaded from 2014 to 2020 where searched for a gene list in a way that each supplemenatry files' content were analysed for their length.
 
+If a supplementary file content is depicting a length greater than 2, it is verified as a supplementary fil composing of a gene list. 
 ```{r,xl_files_with_genelist}
 
 res2014_l <- strsplit(res2014," ")
-head(res2014_l)
 res2014_xlg <- res2014_l[which(lapply(res2014_l,length)>2)]
 res2014_xlg <- length(unique(sapply(res2014_xlg,"[[",2)))
 res2014_xlg
@@ -116,11 +128,12 @@ total_pub_xlg
 pub_xlg <- c(res2014_xlg,res2015_xlg,res2016_xlg,res2017_xlg,res2018_xlg,res2019_xlg,res2020_xlg,total_pub_xlg)
 
 ```
-
+## Publications with xl gene list 
+The results from the excel files with gene lists were shortlisted in a manner where the related publication for each supplementary file with excel gene list was selected 
 ```{r,publications_with_xlgene}
 
 res2014_l <- strsplit(res2014," ")
-head(res2014_l)
+
 res2014_lx <- res2014_l[which(lapply(res2014_l,length)>2)]
 res2014_lx <- length(unique(sapply(res2014_lx,"[[",1)))
 res2014_lx
@@ -150,9 +163,16 @@ total_pub_xls <- sum(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2
 pub_xls <- c(res2014_lx,res2015_lx,res2016_lx,res2017_lx,res2018_lx,res2019_lx,res2020_lx,total_pub_xls)
 
 ```
-
 ## Publications with suspected gene name errors
+The resulted publications with excel gene list were run in a shell scripted software where each selected publications with excel gene list were screened for their gene symbols.
 
+Erroneous conversions, such as date formats,scientific numbers and five-digit numbers were choosen from gene lists as gene name errors and the results were recorded 
+and saved as "aggregated_res". 
+This aggregated_res file composed of PMCID,Species,Journal name, year and the link to the affected file.
+
+Total suspected publications with gene name errors were detected from aggregated_res file and 
+
+aggregated_res file was analysed in a manner where publications with gene name errors for each year were also extracted.
 ```{r,pubs_with_suspected_errors}
 
 aggregated_res <- readLines("results/genom/aggregated_res.txt")
@@ -164,7 +184,6 @@ suspected_pub <- sapply(strsplit(aggregated_res," "),"[[",1)
 suspected_pub_year <- sapply(strsplit(aggregated_res," "),"[[",3)
 suspected_pub_file <- sapply(strsplit(aggregated_res," "),"[[",4)
 suspected_df <- data.frame(suspected_pub,suspected_pub_year,suspected_pub_file)
-head(suspected_df)
 
 ## 2014
 suspected_pub_2014_df <- subset(suspected_df[suspected_df$suspected_pub_year=="results2014.txt",])
@@ -204,18 +223,21 @@ suspected_pub_2020
 suspected_pub <- c(suspected_pub_2014,suspected_pub_2015,suspected_pub_2016,suspected_pub_2017,suspected_pub_2018,suspected_pub_2019,suspected_pub_2020,total_suspected_pub)
 
 ```
-
 ## Affected XLS files
-
+aggregated_res file was analysed for the total number of spread files which composed of gene name errors and the final result was saved as "affected_xl"
 ```{r,total_affectedxls}  
-
 affected_xl <- length(sapply(strsplit(aggregated_res," "),"[[",1))
 affected_xl
-
 ```
-
 ## False positive XLS files
+In order to reconfirm the results obtained each spreadsheet in aggregated_res file was manually opened to validate accuracy of the data 
+and final result was updated in the "aggregated_res" file.
+In the manual search of aggregated_res for validating accuracy of data in the file, several false positive excel files were recorded 
+and these false positive results were saved in a text file named "false_positive.txt"
 
+false_positive.txt file was read as "false positive".
+Total number of false positive results were recorded from "false_positive.txt" and saved as "total_false_positive_xls".
+"false positive" was reanalysed based on the year(2014 to 2020) to obtain number of false positive excel files for each year.
 ```{r,false_positive_xls}
 
 false_positive <- read.table("results/genom/false_positive.txt")
@@ -260,13 +282,13 @@ false_positive_2020_xls
 false_positive_xls <- c(false_positive_2014_xls,false_positive_2015_xls,false_positive_2016_xls,false_positive_2017_xls,false_positive_2018_xls,false_positive_2019_xls,false_positive_2020_xls,total_false_positive_xls)
 
 ```
-
 ## False positive publications
-
+"false_positive" was reannalysed for the total number of false positive publications and the result was saved as "total_false_positive_pub".
+"false positive" was reanalysed based on the year(2014 to 2020) to obtain number of false positive publications for each year.
 ```{r,false_positive_pub}
 
 false_positive <- read.table("results/genom/false_positive.txt")
-head(false_positive)
+
 total_false_positive_pub <- length(unique(false_positive$V1))
 total_false_positive_pub
 
@@ -308,11 +330,15 @@ false_positive_2020_pub
 false_positive_pub <- c(false_positive_2014_pub,false_positive_2015_pub,false_positive_2016_pub,false_positive_2017_pub,false_positive_2018_pub,false_positive_2019_pub,false_positive_2020_pub,total_false_positive_pub)
 
 ```
-
 ## Affected files
+In order to reconfirm the results obtained each spreadsheet in aggregated_res file was manually opened to validate accuracy of the data 
+and final result was saved in "true_positive.txt" file.
 
+true_positive.txt" file was read as affected xls.
+Total number of true positive excel files with gene name errors from the "true_positive.txt" was obtained and the result was saved as "total_affected_xls"
+
+"affected.xls" was reannalysed based on the year(2014 to 2020) to obtain number of true positive excel files for each year.
 ```{r,affected_xls}
-
 affected_xls <- read.table("results/genom/true_positive.txt")
 total_affected_xls <- nrow(affected_xls)
 total_affected_xls
@@ -353,11 +379,10 @@ affected_xls_2020 <- length(affected_xls_2020$V1)
 affected_xls_2020
 
 affected_xls_files <- c(affected_xls_2014,affected_xls_2015,affected_xls_2016,affected_xls_2017,affected_xls_2018,affected_xls_2019,affected_xls_2020,total_affected_xls)
-
 ```
-
 ## Affected publications
-
+"affected xls" was reannalysed for the total number of true positive publications and the result was saved as "total_affected_pub".
+"affected xls" was reanalysed based on the year(2014 to 2020) to obtain number of true positive publications for each year.
 ```{r,affected_publications}
 
 affected_xls <- read.table("results/genom/true_positive.txt")
@@ -396,20 +421,18 @@ affected_pub_2019
 
 ## affected pub for 2020
 pub_2020 <- subset(affected_xls[affected_xls$V4==2020,])
-head(pub_2020)
+
 affected_pub_2020 <- length(unique(pub_2020$V1))
 affected_pub_2020
 
 affected_pub <- c(affected_pub_2014,affected_pub_2015,affected_pub_2016,affected_pub_2017,affected_pub_2018,affected_pub_2019,affected_pub_2020,total_affected_pub)
 affected_pub
-
 ```
 
-
 ## Proportion of Excel gene lists articles containing errors
-
+"total_affected_pub" was divided by "total_pub_xls" and multiple by 100 to find the propotion of excel gene lists articles which contain gene name errors.
+The final answer was recorded to 3 significant figures and the result was saved as "total_affected_pub".
 Figues below are precentages.
-
 ```{r,excelgenelist_paper_error_percentages}
 
 Total_percent_of_errors <- signif(total_affected_pub/total_pub_xls*100,3)
@@ -445,12 +468,11 @@ percentage_2020
 
 percentages <- c(percentage_2014,percentage_2015,percentage_2016,percentage_2017,percentage_2018,percentage_2019,percentage_2020,Total_percent_of_errors)
 percentages
-
 ```
 
-
+## Table 3 of the manuscript
+Table 3. Results of a screen for gene name errors in PubMed Central. Only articles with “Genom” in the title or abstract were screened from the manuscript was generated.
 ```{r,dataframe_years}
-
 years <- c("2014","2015","2016","2017","2018","2019","2020","Total")
 df_gene_name_errors_years <- data.frame(pmc,res,pub_xlg,pub_xls,suspected_pub,false_positive_xls,false_positive_pub,affected_xls_files,affected_pub,percentages)
 df_gene_name_errors_years <- cbind(years,df_gene_name_errors_years)
@@ -470,19 +492,22 @@ colnames(df_gene_name_errors_years) <- c(" ",
   df_gene_name_errors_years%>%
   kbl() %>%
   kable_paper("hover", full_width = F)
-
 ```
+## Plots for figure 1 of the manuscript
+plots are created for the figure 1 in the manuscript which composed of results for prevalence of gene name errors in the period 2014-2020.
 
-## Plots for figure 1
-
+Accordingly,
+1.barplot for Publications with Excel gene lists
+2.barplot for Affected publication
+3.Line diagram for Proportion of publications affected
 ```{r,plots1,fig.height=9,fig.width=6}
-
 pdf("fig1.pdf",width=4,height=7) 
 par(mfrow=c(3,1))
+
 #barplot for Publications with Excel gene lists
 df <- df_gene_name_errors_years
 df <- df[1:(nrow(df)-1),]
-colnames(df)
+
 barplot(df[,5],names.arg = df[,1],ylab="Publications with Excel gene lists",ylim = c(0,2500))
 grid(nx=0,ny=5,col = "gray")
 
@@ -499,7 +524,6 @@ par(mfrow=c(3,1))
 #barplot for Publications with Excel gene lists
 df <- df_gene_name_errors_years
 df <- df[1:(nrow(df)-1),]
-colnames(df)
 barplot(df[,5],names.arg = df[,1],ylab="Publications with Excel gene lists",ylim = c(0,2500))
 grid(nx=0,ny=5,col = "gray")
 
@@ -510,35 +534,34 @@ grid(nx=0,ny=8,col = "gray")
 #Line diagram for Proportion of publications affected
 plot(x=df[,1],y=df[,11],ylab ="Proportion of publications affected (%)",xlab = "",ylim = c(0,35),type = "b",pch=19,bty="n")
 grid()
-
 ```
 
 ## Gene name errors for different organisms
- 
-```{r,gene_name_errors_organism}
+From the results obtained on the publications and excel spread sheets with gene name errors, a reanalysation was performed to identify which organism composed of most number of errors in their name.
 
+Each publication and excel sheet was screened for some of the most commonly misinterpretated genetic name.
+Accordngly, 
+A. thaliana,C. elegans,D. melanogaster,D. rerio,G. gallus,H. sapiens,M. musculus,O. sativa,R. norvegicus,S. cerevisiae species were selected and each publications and excel sheets composing of gene name errors from 2014 to 2020 were screened. The obtained results were saved under each individual name of the species.
+
+Propotion of article affected for each individual species was calculated and resulted percentage was saved to 3 significant figures.
+```{r,gene_name_errors_organism}
 #Athaliana
 res_all_years <- c(res2014,res2015,res2016,res2017,res2018,res2019,res2020)
 str(res_all_years)
 res_all_years_l <- strsplit(res_all_years," ")
-head(res_all_years_l)
 res_all_years_lx <- res_all_years_l[which(lapply(res_all_years_l,length)>2)]
-head(res_all_years_lx)
 pmid <- sapply(res_all_years_lx,"[[",1)
 org <- sapply(res_all_years_lx,"[[",3)
 org_df <- data.frame(pmid,org)
-head(org_df)
-at_pub <- subset(org_df,org=="Athaliana")
-at <- length(unique(at_pub$pmid))
-at
+ath_pub <- subset(org_df,org=="Athaliana")
+ath <- length(unique(ath_pub$pmid))
+ath
 
-str(affected_xls)
-head(affected_xls)
 athaliana <- subset(affected_xls[affected_xls$V2=="Athaliana",])
-affected_pub_at <- length(unique(athaliana$V1))
-affected_pub_at
-percentage_at <- signif(affected_pub_at/at*100,3)
-percentage_at
+affected_pub_ath <- length(unique(athaliana$V1))
+affected_pub_ath
+percentage_ath <- signif(affected_pub_ath/ath*100,3)
+percentage_ath
 
 #Celegans
 cel_pub <- subset(org_df,org=="Celegans")
@@ -638,27 +661,23 @@ affected_pub_scerevisiae <- length(unique(scerevisiae$V1))
 affected_pub_scerevisiae
 percentage_scerevisiae <- signif(affected_pub_scerevisiae/cerevisiae*100,3)
 percentage_scerevisiae
-
 ```
-
+## Table 4 of the manuscript
+A data frame was created which comnposed of Species,Publications with excel gene lists,Affected publications and Proportion of artcles affected followed by generation of table 4 in the manuscript.
 ```{r,dataframe_species}
-
 Species <- c("A.thaliana","C.elegans","D.melanogaster","D.rerio","G.gallus",
   "H.sapiens","M.musculus","O.sativa","R.norvegicus","S.cerevisiae")
 
-publications_species <- c(at,cel,mel,rerio,gallus,sapiens,musculus,sativa,norvegicus,cerevisiae)
-publications_species
-
-affected_pubb <- c(affected_pub_at,affected_pub_celegans,affected_pub_drerio,
+publications_species <- c(ath,cel,mel,rerio,gallus,sapiens,musculus,sativa,norvegicus,cerevisiae)
+affected_pubb <- c(affected_pub_ath,affected_pub_celegans,affected_pub_drerio,
   affected_pub_ggallus,affected_pub_hsapiens,affected_pub_melano,affected_pub_mmusculus,
   affected_pub_osativa,affected_pub_rnorvegicus,affected_pub_scerevisiae)
 
-proportion_species <- c(percentage_at,percentage_celegans,percentage_drerio,percentage_ggallus,
+proportion_species <- c(percentage_ath,percentage_celegans,percentage_drerio,percentage_ggallus,
   percentage_hsapiens,percentage_melano,percentage_mmusculus,percentage_osativa,
   percentage_rnorvegicus,percentage_scerevisiae)
 
 gene_name_errors_species <- data.frame(Species,publications_species,affected_pubb,proportion_species)
-
 colnames(gene_name_errors_species) <- c("Species",
   "Publications with excel gene lists",
   "Affected publications",
@@ -669,15 +688,19 @@ colnames(gene_name_errors_species) <- c("Species",
   kable_paper("hover", full_width = F)
 
 ```
+## Number of affected publications in different journals
+Total number of journals index in PubMed Central was extraced for every year from 2014 to 2020 was obtained and result was saved as "jdf".
+Total number of journals composing of one or more supplementary excel lists was calculated and result was saved as "res_p".
+jdf_subset was created to evaluate repetition of the data obtained in "jdf" and "res_p".
 
+"journal_supplementary" was created to count number of journals with gene name errors in the supplementary files.
+"jdf_t_df" was created to for number of articles with excel gene list by using "jdf_subset".
+Number of affected articles was calculated using "affected_xls".
 
-## Now a look at the number of affected publications in different journals
-
+Table 5 in the manuscript was created from above gathered results.
 ```{r,gene_name_errors_journal}
-
 #journals index in PMC
 j2014 <- read.table("pmc/genom/pmc_journal2014genom.out.txt")
-head(j2014)
 j2015 <- read.table("pmc/genom/pmc_journal2015genom.out.txt")
 j2016 <- read.table("pmc/genom/pmc_journal2016genom.out.txt")
 j2017 <- read.table("pmc/genom/pmc_journal2017genom.out.txt")
@@ -685,13 +708,11 @@ j2018 <- read.table("pmc/genom/pmc_journal2018genom.out.txt")
 j2019 <- read.table("pmc/genom/pmc_journal2019genom.out.txt")
 j2020 <- read.table("pmc/genom/pmc_journal2020genom.out.txt")
 jdf <- rbind(j2014,j2015,j2016,j2017,j2018,j2019,j2020)
-head(jdf)
 length(unique(jdf[,2]))
        
 #journals published one or more supplementary Excel gene lists
 res2014_xlg <- res2014_l[which(lapply(res2014_l,length)>2)]
 res2014_p <- unique(sapply(res2014_xlg,"[[",1))
-head(res2014_p)
 
 res2015_xlg <- res2015_l[which(lapply(res2015_l,length)>2)]
 res2015_p <- unique(sapply(res2015_xlg,"[[",1))
@@ -716,26 +737,21 @@ head(res_p)
 
 jdf_subset <- jdf[which(jdf[,1] %in% res_p),]
 length(unique(jdf_subset[,2]))
-head(jdf)
 
-#journals with gene name errors in the supplementary files
+#Number of journals with gene name errors in the supplementary files
 journal_supplementary <- length(unique(affected_xls$V3))
 journal_supplementary
 
 # Number of articles with excel gene list
 jdf <- unique(jdf_subset)
-head(jdf)
 jdf_t <- table(jdf[,2])
-head(jdf_t)
 jdf_t_df <- as.data.frame(jdf_t)
-head(jdf_t_df)
 
 # Number of affected articles 
 jres <- unique(affected_xls[,c(1,3)])
-head(jres)
 j_table <- table(jres[,2])
 j_table_df <- as.data.frame(j_table)
-head(j_table_df)
+
 
 # table content for gene name errors by journal 
 jj <- merge(jdf_t_df,j_table_df,by="Var1")
@@ -755,9 +771,13 @@ jjf <- jjf[order(-jjf[,3]),]
 
 jjf %>% kbl() %>%
   kable_paper("hover", full_width = F)
-
 ```
+## Top journals with more than 100 gene name errors articles from 2014 to 2020
+Top six journals with most gene name errors were selected based on "Number of affected articles" in the Table 5 of the manuscript.
 
+Accordingly,
+Nat Commun,PLoS One,Sci Rep,BMC Genomics,PLoS Genet,Oncotarget were considered as top 6 journals with most gene name errors.
+The number of publications published by each of these 6 journals in each year with gene name errors were counted and result was recorded.
 ```{r,top journals with more than 100 gene name errors articles from 2014 to 2020}
 
 aj2014 <- unique(pub_2014[,c(1,3)])
@@ -769,7 +789,6 @@ aj2019 <- unique(pub_2019[,c(1,3)])
 aj2020 <- unique(pub_2020[,c(1,3)])
 
 par(mfrow=c(3,1))
-
 # Nature communication
 Nat_Commun_2014 <- nrow(subset(aj2014[aj2014$V3=="Nat_Commun",]))
 Nat_Commun_2015 <- nrow(subset(aj2015[aj2015$V3=="Nat_Commun",]))
@@ -778,7 +797,6 @@ Nat_Commun_2017 <- nrow(subset(aj2017[aj2017$V3=="Nat_Commun",]))
 Nat_Commun_2018 <- nrow(subset(aj2018[aj2018$V3=="Nat_Commun",]))
 Nat_Commun_2019 <- nrow(subset(aj2019[aj2019$V3=="Nat_Commun",]))
 Nat_Commun_2020 <- nrow(subset(aj2020[aj2020$V3=="Nat_Commun",]))
-
 
 # PLoS_One
 PLoS_One_2014 <- nrow(subset(aj2014[aj2014$V3=="PLoS_One",]))
@@ -824,11 +842,10 @@ Oncotarget_2017 <- nrow(subset(aj2017[aj2017$V3=="Oncotarget",]))
 Oncotarget_2018 <- nrow(subset(aj2018[aj2018$V3=="Oncotarget",]))
 Oncotarget_2019 <- nrow(subset(aj2019[aj2019$V3=="Oncotarget",]))
 Oncotarget_2020 <- nrow(subset(aj2020[aj2020$V3=="Oncotarget",]))
-
 ```
 
-## Plots for figure 2
-
+## Plots for figure 2 of the manuscript
+Temporal trends for the six journals with most gene name errors from 2014 to 2020 was observed and Figure 2 in the manuscript was reproduced. 
 ```{r,plot2,fig.height=9,fig.width=6}
 
 pdf("fig2.pdf",width=4,height=7) 
@@ -836,10 +853,9 @@ par(mfrow=c(3,1))
 # line diagrams on the number of gene name error articles published by  journal per year
 
 ## Nature communication
-
 years <- c("2014","2015","2016","2017","2018","2019","2020")
 nat <- c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,
-  Nat_Commun_2017,Nat_Commun_2018,Nat_Commun_2019,Nat_Commun_2020)
+ Nat_Commun_2017,Nat_Commun_2018,Nat_Commun_2019,Nat_Commun_2020)
 df_Nat_Commun <- data.frame(years,nat)
 
 plot(df_Nat_Commun,ylab="number of articles with gene name errors",xlab="years",
@@ -848,7 +864,6 @@ plot(df_Nat_Commun,ylab="number of articles with gene name errors",xlab="years",
 grid()
 
 ## PLOS ONE
-
 plos_one <- c(PLoS_One_2014,PLoS_One_2015,PLoS_One_2016,PLoS_One_2017,
   PLoS_One_2018,PLoS_One_2019,PLoS_One_2020)
 df_plos_one <- data.frame(years,plos_one)
@@ -859,7 +874,6 @@ plot(df_plos_one,ylab="number of articles with gene name errors",
 grid()
 
 ## Scientific Reports
-
 sci_rep <- c(Sci_Rep_2014,Sci_Rep_2015,Sci_Rep_2016,Sci_Rep_2017,
   Sci_Rep_2018,Sci_Rep_2019,Sci_Rep_2020)
 df_sci_rep <- data.frame(years,sci_rep)
@@ -871,7 +885,6 @@ grid()
 
 
 ## BMC_Genomics
-
 bmc <- c(BMC_Genomics_2014,BMC_Genomics_2015,BMC_Genomics_2016,
   BMC_Genomics_2017,BMC_Genomics_2018,BMC_Genomics_2019,BMC_Genomics_2020)
 df_bmc <- data.frame(years,bmc)
@@ -882,7 +895,6 @@ plot(df_bmc,ylab="number of articles with gene name errors",xlab="years",
 grid()
 
 ## PLoS Genetics
-
 plos_genet <- c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,
   PLoS_Genet_2017,PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
 df_plos_genet <- data.frame(years,plos_genet)
@@ -893,7 +905,6 @@ plot(df_plos_genet,ylab="number of articles with gene name errors",
 grid()
 
 ## Oncotarget
-
 onco <- c(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,
   Oncotarget_2017,Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
 df_oncotarget <- data.frame(years,onco)
@@ -905,16 +916,10 @@ grid()
 
 dev.off()
 
-```
-
-```{r,plot3,fig.height=9,fig.width=6}
-
 par(mfrow=c(3,1))
-
 # Bar plots on the number of gene name error articles published by  journal per year
 
 ## Nature communication
-
 years <- c("2014","2015","2016","2017","2018","2019","2020")
 nat <- c(Nat_Commun_2014,Nat_Commun_2015,Nat_Commun_2016,Nat_Commun_2017,Nat_Commun_2018,
   Nat_Commun_2019,Nat_Commun_2020)
@@ -926,7 +931,6 @@ plot(df_Nat_Commun,ylab="number of articles with gene name errors",
 grid()
 
 ## PLOS ONE
-
 plos_one <- c(PLoS_One_2014,PLoS_One_2015,PLoS_One_2016,PLoS_One_2017,
   PLoS_One_2018,PLoS_One_2019,PLoS_One_2020)
 df_plos_one <- data.frame(years,plos_one)
@@ -938,7 +942,6 @@ grid()
 
 
 ## Scientific Reports
-
 sci_rep <- c(Sci_Rep_2014,Sci_Rep_2015,Sci_Rep_2016,Sci_Rep_2017,
   Sci_Rep_2018,Sci_Rep_2019,Sci_Rep_2020)
 df_sci_rep <- data.frame(years,sci_rep)
@@ -950,7 +953,6 @@ grid()
 
 
 ## BMC_Genomics
-
 bmc <- c(BMC_Genomics_2014,BMC_Genomics_2015,BMC_Genomics_2016,
   BMC_Genomics_2017,BMC_Genomics_2018,BMC_Genomics_2019,BMC_Genomics_2020)
 df_bmc <- data.frame(years,bmc)
@@ -961,7 +963,6 @@ plot(df_bmc,ylab="number of articles with gene name errors",
 grid()
 
 ## PLoS Genetics
-
 plos_genet <- c(PLoS_Genet_2014,PLoS_Genet_2015,PLoS_Genet_2016,PLoS_Genet_2017,
   PLoS_Genet_2018,PLoS_Genet_2019,PLoS_Genet_2020)
 df_plos_genet <- data.frame(years,plos_genet)
@@ -972,7 +973,6 @@ plot(df_plos_genet,ylab="number of articles with gene name errors",
 grid()
 
 ## Oncotarget
-
 onco <- c(Oncotarget_2014,Oncotarget_2015,Oncotarget_2016,Oncotarget_2017,
   Oncotarget_2018,Oncotarget_2019,Oncotarget_2020)
 str(onco)
@@ -983,11 +983,12 @@ plot(df_oncotarget,ylab="number of articles with gene name errors",
   xlab="years",ylim=c(0,50),type="b",pch=19,bty="n",
   main="Papers with gene name errors in Oncotarget from 2014 to 2020",cex.main=1)
 grid()
-
 ```
 
+## Journals error articles in refernce to yearly basis
+All the journals from 2014 to 2020 which contain  more than 10 gene name error publications.
 
-
+Later we have output top 10 journals with gene name errors for each year from 2014 to 2020 with " head(aj20**_j_dsc,10)
 ```{r,journals error articles in refernce to yearly basis}
 
 aj2014_tab <- table(aj2014[,2])
@@ -1037,14 +1038,10 @@ aj2020_df <- as.data.frame(aj2020_tab)
 aj2020_j <- aj2020_df[which(aj2020_df[,2]>10),]
 aj2020_j_dsc <- aj2020_df[order(-aj2020_df[,2]),]
 head(aj2020_j_dsc,10)
-
 ```
-
 ## Journal impact factor correlation
-
 Journal Citation Reports 2020 (Impact factor & Ranking of 2019).
 InCites Journal Citation Reports (Clarivate Analytics).
-
 ```{r,jif}
 
 jifs <- read.table("jifs.tsv",header=TRUE)
@@ -1052,13 +1049,9 @@ proportions <- jjf[,c(1,4)]
 myjifs <- merge(proportions, jifs, by.x="journal",by.y="Journal")
 cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`)
 cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`,method="s")
-
 ```
-
 ## Session information
-
 For reproducibility.
-
 ```{r,sessioninfo}
 
 sessionInfo()
