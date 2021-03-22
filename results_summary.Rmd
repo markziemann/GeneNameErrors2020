@@ -12,6 +12,7 @@ theme: cosmo
 
 library("dplyr")
 library("kableExtra")
+library("eulerr")
 library("Cairo")
 options(bitmapType="cairo")
 
@@ -1019,18 +1020,61 @@ head(aj2020_j_dsc,10)
 
 ```
 
+
+## Consistency between this and our previous analysis
+
+Focus on plos one in the period 2014,2015.
+Previously we found 60 studies.
+Here we find 115 studies.
+Of these 56 are common to both.
+
+```{r,plosone}
+
+prev <- read.table("plosone_20142015.tsv",header=TRUE,sep="\t")
+prev <- subset(prev,Confirmed=="Confirmed")
+tail(prev)
+prev_pmc <- unique(prev$PMCID)
+length(prev_pmc)
+
+
+new <- subset(aff_xls,V3=="PLoS_One")
+new <- subset(new, V4=="2014" | V4 == "2015")
+new <- new[,c(1,3,4)]
+new_pmc <- unique(new$V1)
+length(new_pmc)
+
+v1 <- list("Prev"=prev_pmc,"New"=new_pmc)
+plot(euler(v1),quantities = TRUE)
+
+# PMCs specific to 2016 study
+setdiff(prev_pmc,new_pmc)
+
+# PMCs specific to 2021 study
+setdiff(new_pmc,prev_pmc)
+
+```
+
 ## Journal impact factor correlation
 
 Journal Citation Reports 2020 (Impact factor & Ranking of 2019).
 InCites Journal Citation Reports (Clarivate Analytics).
 
-```{r,jif}
+```{r,jif, fig.height=7,fig.width=7}
 
 jifs <- read.table("jifs.tsv",header=TRUE)
 proportions <- jjf[,c(1,4)]
 myjifs <- merge(proportions, jifs, by.x="journal",by.y="Journal")
 cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`)
 cor.test(myjifs$JIF,myjifs$`Proportion of articles affected`,method="s")
+
+mylm <- lm(myjifs$`Proportion of articles affected` ~ myjifs$JIF)
+summary(mylm)
+
+plot(myjifs$JIF,myjifs$`Proportion of articles affected`,
+  xlab="JIF", ylab="Proportion of articles affected (%)",
+  main="Articles with supplementary Excel gene lists")
+abline(mylm)
+
 ```
 
 ## Session information
