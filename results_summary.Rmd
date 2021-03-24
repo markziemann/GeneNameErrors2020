@@ -1085,6 +1085,6 @@ For reproducibility.
 
 ```{r,sessioninfo}
 
-sessionInfo()
+sessionInfo() 
 
 ```
