@@ -10,6 +10,8 @@ output:
 theme: cosmo
 ---
 
+Source: http://118.138.234.73/public/gene_name_errors/manuscript_files/results_summary.html
+
 ```{r,library_load}
 
 library("dplyr")
@@ -216,78 +218,6 @@ affected_xl <- length(sapply(strsplit(aggregated_res," "),"[[",1))
 affected_xl
 
 ```
-## False positive XLS files
-
-In order to reconfirm the results obtained each spreadsheet in aggregated_res 
-file was manually opened to validate accuracy of the data 
-and final result was updated in the "aggregated_res" file.
-In the manual search of aggregated_res for validating accuracy of data in the file,
-several false positive excel files were recorded 
-and these false positive results were saved in a text file named "fp.txt"
-
-fp.txt file was read as "false positive".
-Total number of false positive results were recorded from "fp.txt" 
-and saved as "total_fp_xls".
-"false positive" was reanalysed based on the year (2014 to 2020) to obtain number 
-of false positive excel files for each year.
-
-```{r,fp_xls}
-
-fp <- read.table("results/genom/false_positive.txt")
-total_fp_xls <- length(fp$V1)
-total_fp_xls
-
-fp_2014 <- subset(fp[fp$V4==2014,])
-fp_2014_xls <- length(fp_2014$V1)
-fp_2015 <- subset(fp[fp$V4==2015,])
-fp_2015_xls <- length(fp_2015$V1)
-fp_2016 <- subset(fp[fp$V4==2016,])
-fp_2016_xls <- length(fp_2016$V1)
-fp_2017 <- subset(fp[fp$V4==2017,])
-fp_2017_xls <- length(fp_2017$V1)
-fp_2018 <- subset(fp[fp$V4==2018,])
-fp_2018_xls <- length(fp_2018$V1)
-fp_2019 <- subset(fp[fp$V4==2019,])
-fp_2019_xls <- length(fp_2019$V1)
-fp_2020 <- subset(fp[fp$V4==2020,])
-fp_2020_xls <- length(fp_2020$V1)
-
-fp_xls <- c(fp_2014_xls,fp_2015_xls,fp_2016_xls,
-  fp_2017_xls,fp_2018_xls,fp_2019_xls,
-  fp_2020_xls,total_fp_xls)
-
-```
-
-## False positive publications
-
-"fp" was reannalysed for the total number of false positive publications 
-and the result was saved as "total_fp_pub".
-"false positive" was reanalysed based on the year(2014 to 2020) to obtain number
-of false positive publications for each year.
-
-```{r,fp_pub}
-
-total_fp_pub <- length(unique(fp$V1))
-fp_2014 <- subset(fp[fp$V4==2014,])
-fp_2014_pub <- length(unique(fp_2014$V1))
-fp_2015 <- subset(fp[fp$V4==2015,])
-fp_2015_pub <- length(unique(fp_2015$V1))
-fp_2016 <- subset(fp[fp$V4==2016,])
-fp_2016_pub <- length(unique(fp_2016$V1))
-fp_2017 <- subset(fp[fp$V4==2017,])
-fp_2017_pub <- length(unique(fp_2017$V1))
-fp_2018 <- subset(fp[fp$V4==2018,])
-fp_2018_pub <- length(unique(fp_2018$V1))
-fp_2019 <- subset(fp[fp$V4==2019,])
-fp_2019_pub <- length(unique(fp_2019$V1))
-fp_2020 <- subset(fp[fp$V4==2020,])
-fp_2020_pub <- length(unique(fp_2020$V1))
-
-fp_pub <- c(fp_2014_pub,fp_2015_pub,fp_2016_pub,
-  fp_2017_pub,fp_2018_pub,fp_2019_pub,
-  fp_2020_pub,total_fp_pub)
-
-```
 
 ## Affected files
 
@@ -357,6 +287,70 @@ pub_2020 <- subset(aff_xls[aff_xls$V4==2020,])
 aff_pub_2020 <- length(unique(pub_2020$V1))
 
 aff_pub <- c(aff_pub_2014,aff_pub_2015,aff_pub_2016,aff_pub_2017,aff_pub_2018,aff_pub_2019,aff_pub_2020,total_aff_pub)
+
+```
+
+## False positive XLS files
+
+In order to reconfirm the results obtained each spreadsheet in aggregated_res
+file was manually opened to validate accuracy of the data
+and final result was updated in the "aggregated_res" file.
+In the manual search of aggregated_res for validating accuracy of data in the file,
+several false positive excel files were recorded
+and these false positive results were saved in a text file named "fp.txt"
+
+fp.txt file was read as "false positive".
+Total number of false positive results were recorded from "fp.txt"
+and saved as "total_fp_xls".
+"false positive" was reanalysed based on the year (2014 to 2020) to obtain number
+of false positive excel files for each year.
+
+```{r,fp_xls}
+
+fp <- read.table("results/genom/false_positive.txt")
+total_fp_xls <- length(fp$V1)
+total_fp_xls
+
+fp_2014 <- subset(fp[fp$V4==2014,])
+fp_2014_xls <- length(fp_2014$V1)
+fp_2015 <- subset(fp[fp$V4==2015,])
+fp_2015_xls <- length(fp_2015$V1)
+fp_2016 <- subset(fp[fp$V4==2016,])
+fp_2016_xls <- length(fp_2016$V1)
+fp_2017 <- subset(fp[fp$V4==2017,])
+fp_2017_xls <- length(fp_2017$V1)
+fp_2018 <- subset(fp[fp$V4==2018,])
+fp_2018_xls <- length(fp_2018$V1)
+fp_2019 <- subset(fp[fp$V4==2019,])
+fp_2019_xls <- length(fp_2019$V1)
+fp_2020 <- subset(fp[fp$V4==2020,])
+fp_2020_xls <- length(fp_2020$V1)
+
+fp_xls <- c(fp_2014_xls,fp_2015_xls,fp_2016_xls,
+  fp_2017_xls,fp_2018_xls,fp_2019_xls,
+  fp_2020_xls,total_fp_xls)
+
+```
+
+## False positive publications
+
+False positive publications = suspected pubs - affected pubs
+
+```{r,fp_pub}
+
+fp_2014_pub <- sus_pub_2014 - aff_pub_2014
+fp_2015_pub <- sus_pub_2015 - aff_pub_2015
+fp_2016_pub <- sus_pub_2016 - aff_pub_2016
+fp_2017_pub <- sus_pub_2017 - aff_pub_2017
+fp_2018_pub <- sus_pub_2018 - aff_pub_2018
+fp_2019_pub <- sus_pub_2019 - aff_pub_2019
+fp_2020_pub <- sus_pub_2020 - aff_pub_2020
+
+total_fp_pub <- sum(fp_2014_pub,fp_2015_pub,fp_2016_pub,fp_2017_pub,fp_2018_pub,fp_2019_pub,fp_2020_pub)
+
+fp_pub <- c(fp_2014_pub,fp_2015_pub,fp_2016_pub,
+  fp_2017_pub,fp_2018_pub,fp_2019_pub,
+  fp_2020_pub,total_fp_pub)
 
 ```
 
