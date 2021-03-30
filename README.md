@@ -20,10 +20,9 @@ The goal of this work is to screen PubMed Central for MS Excel spreadsheets and 
 
 * monthly.sh is a script which runs monthly reports on the number of publications with gene name errors by searching for auto-converted gene names in related supplementary files in PubMed Central. 
 
-* results_summary.Rmd is a markdown file which consists of analysis of output data from bash script "gene_names.sh" which is used in screening a list of PMC articles. This mark down file use the output data to generat figures related to the paper.
+* results_summary.Rmd is a markdown file which consists of analysis of output data from bash script "gene_names.sh" which is used in screening a list of PMC articles. This Rmarkdown file uses the output data to generate figures and tables shown in the paper.
 
 * monthly.Rmd is a markdown file used in analysing trends and insights of the distribution of gene name errored publications by identifyig gene name errors present in supplementary files in PubMed Central. 
-
 
 ## Input data
 
@@ -46,16 +45,10 @@ In the folder "results" there are several text files(aggregated_res.txt,false.po
 
 * aggregated_res.txt is a text file which consists of list genes which are of erroneous conversions, such as date formats, scientific numbers and five-digit numbers. 
 
-* false.positive.txt is a text file which compose of tatal number of false positive results which was recorded during analysis
+* false.positive.txt is a text file which compose of total number of false positive results which was recorded during analysis
 
 * true.positive.txt is a text file containing total number of papers with gene name errors from 2014 to 2020.
 
-*There are several files like results2015.txt which is a list of PMC papers. These publications selected upon searching PubMed Central using the keyword "genom".
+* There are several files like results2015.txt which is a list of PMC papers. These publications selected upon searching PubMed Central using the keyword "genom".
 
-In the folder "genelist" there are several text files which consist lists of several major organisms which depicts higher rates of erroneous conversions.
-
-
-
-
-
-
+In the folder "genelist" there are several text files which for several major organisms which are used in the gene list detection process by gene_names.sh.
