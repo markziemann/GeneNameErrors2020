@@ -40,19 +40,7 @@ Start with figuring out the date to search PubMed Central.
 
 ```{r,month}
 
-CURRENT_MONTH=format(Sys.time(), "%m")
-CURRENT_YEAR=format(Sys.time(), "%Y")
-
-if (CURRENT_MONTH == "01") {
-  PREV_YEAR=as.character(as.numeric(format(Sys.time(), "%Y"))-1)
-  PREV_MONTH="12"
-} else {
-  PREV_YEAR=CURRENT_YEAR
-  PREV_MONTH=as.character(as.numeric(format(Sys.time(), "%m"))-1)
-}
-
-DATE=paste(PREV_YEAR,"/",PREV_MONTH,sep="")
-DATE
+DATE="2021/3"
 
 ```
 
