@@ -214,6 +214,8 @@ JOURNALS_TABLE <- JOURNALS_TABLE[order(-JOURNALS_TABLE)]
 
 length(JOURNALS_TABLE)
 
+NUM_JOURNALS=length(JOURNALS_TABLE)
+
 par(mar=c(5,25,4,2))
 barplot(head(JOURNALS_TABLE,10), horiz=TRUE, las=1, 
   xlab="Articles with gene name errors in supp files",
@@ -281,6 +283,8 @@ links <- links[grep("html",links)]
 
 links
 
+unlink("online_files/",recursive=TRUE)
+
 dir.create("online_files")
 
 sapply(links, function(mylink) { 
@@ -330,7 +334,10 @@ trends <- as.data.frame(trends)
 rownames(trends) <- c("NUM_GENELIST_ARTICLES","NUM_ERROR_GENELIST_ARTICLES","ERROR_PROPORTION","NUM_JOURNALS")
 trends <- t(trends)
 trends <- as.data.frame(trends)
-trends
+
+trends <- rbind(trends,CURRENT_RES)
+paste(CURRENT_YEAR,CURRENT_MONTH,sep="-")
+rownames(trends)[nrow(trends)] <- paste(CURRENT_YEAR,CURRENT_MONTH,sep="-")
 
 plot(trends$NUM_GENELIST_ARTICLES, xaxt = "n" , type="b" , main="Number of articles with Excel gene lists per month",
  ylab="number of articles", xlab="month")
