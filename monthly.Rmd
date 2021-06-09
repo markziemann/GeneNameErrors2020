@@ -160,7 +160,7 @@ ERROR_GENELISTS
 
 Let's investigate the errors in more detail.
 
-```{r,errors}
+```{r,errors,fig.height=8,fig.width=8}
 
 # By species
 SPECIES <- sapply(strsplit(ERROR_GENELISTS," "),"[[",3)
@@ -269,7 +269,78 @@ ARTICLE_DATA
 
 ## Trend info
 
-TODO: To plot the trend over the past 6 months.
+To plot the trend over the past 6-12 months.
+
+```{r,trend1,fig.height=8,fig.width=8}
+
+dir.create("online_files")
+
+sapply(links, function(mylink) { 
+  download.file(paste(url,mylink,sep=""),destfile=paste("online_files/",mylink,sep=""))  
+} )
+
+
+myfilelist <- list.files("online_files/",full.names=TRUE)
+
+trends <- sapply(myfilelist,  function(myfilename) {
+
+  x <- readLines(myfilename)
+
+  # Num XL gene list articles
+  NUM_GENELIST_ARTICLES <- x[grep("NUM_GENELIST_ARTICLES",x)[3]+1]
+  NUM_GENELIST_ARTICLES <- sapply(strsplit(NUM_GENELIST_ARTICLES," "),"[[",3)
+  NUM_GENELIST_ARTICLES <- sapply(strsplit(NUM_GENELIST_ARTICLES,"<"),"[[",1)
+  NUM_GENELIST_ARTICLES <- as.numeric(NUM_GENELIST_ARTICLES)
+
+  # number of affected articles
+  NUM_ERROR_GENELIST_ARTICLES <- x[grep("NUM_ERROR_GENELIST_ARTICLES",x)[3]+1]
+  NUM_ERROR_GENELIST_ARTICLES <- sapply(strsplit(NUM_ERROR_GENELIST_ARTICLES," "),"[[",3)
+  NUM_ERROR_GENELIST_ARTICLES <- sapply(strsplit(NUM_ERROR_GENELIST_ARTICLES,"<"),"[[",1)
+  NUM_ERROR_GENELIST_ARTICLES <- as.numeric(NUM_ERROR_GENELIST_ARTICLES)
+
+  # Error proportion
+  ERROR_PROPORTION <- x[grep("ERROR_PROPORTION",x)[3]+1]
+  ERROR_PROPORTION <- sapply(strsplit(ERROR_PROPORTION," "),"[[",3)
+  ERROR_PROPORTION <- sapply(strsplit(ERROR_PROPORTION,"<"),"[[",1)
+  ERROR_PROPORTION <- as.numeric(ERROR_PROPORTION)
+
+  # number of journals
+  NUM_JOURNALS <- x[grep('JOURNALS_TABLE',x)[3]+1]
+  NUM_JOURNALS <- sapply(strsplit(NUM_JOURNALS," "),"[[",3)
+  NUM_JOURNALS <- sapply(strsplit(NUM_JOURNALS,"<"),"[[",1)
+  NUM_JOURNALS <- as.numeric(NUM_JOURNALS)
+  NUM_JOURNALS
+
+  res <- c(NUM_GENELIST_ARTICLES,NUM_ERROR_GENELIST_ARTICLES,ERROR_PROPORTION,NUM_JOURNALS)
+
+  return(res)
+})
+
+colnames(trends) <- sapply(strsplit(colnames(trends),"_"),"[[",3)
+colnames(trends) <- gsub(".html","",colnames(trends))
+trends <- as.data.frame(trends)
+rownames(trends) <- c("NUM_GENELIST_ARTICLES","NUM_ERROR_GENELIST_ARTICLES","ERROR_PROPORTION","NUM_JOURNALS")
+trends <- t(trends)
+trends <- as.data.frame(trends)
+trends
+
+plot(trends$NUM_GENELIST_ARTICLES, xaxt = "n" , type="b" , main="Number of articles with Excel gene lists per month",
+ ylab="number of articles", xlab="month")
+axis(1, at=1:nrow(trends), labels=rownames(trends))
+
+plot(trends$NUM_ERROR_GENELIST_ARTICLES, xaxt = "n" , type="b" , main="Number of articles with gene name errors per month",
+ ylab="number of articles", xlab="month")
+axis(1, at=1:nrow(trends), labels=rownames(trends))
+
+plot(trends$ERROR_PROPORTION, xaxt = "n" , type="b" , main="Proportion of articles with Excel gene list affected by errors",
+ ylab="proportion", xlab="month")
+axis(1, at=1:nrow(trends), labels=rownames(trends))
+
+plot(trends$NUM_JOURNALS, xaxt = "n" , type="b" , main="Number of journals with affected articles",
+ ylab="number of journals", xlab="month")
+axis(1, at=1:nrow(trends), labels=rownames(trends))
+
+```
 
 ## References
 
