@@ -25,6 +25,7 @@ Central articles in the previous month.
 
 ```{r,libs}
 
+library("XML")
 library("jsonlite")
 library("xml2")
 library("reutils")
@@ -104,7 +105,7 @@ The dates and five-digit numbers indicate transmogrified gene names.
 
 ```{r,screen}
 
-system("./gene_names.sh pmc.txt")
+#system("./gene_names.sh pmc.txt")
 results <- readLines("results.txt")
 
 XLS <- results[grep("XLS",results,ignore.case=TRUE)]
@@ -273,6 +274,13 @@ To plot the trend over the past 6-12 months.
 
 ```{r,trend1,fig.height=8,fig.width=8}
 
+url <- "http://ziemann-lab.net/public/gene_name_errors/"
+doc <- htmlParse(url)
+links <- xpathSApply(doc, "//a/@href")
+links <- links[grep("html",links)]
+
+links
+
 dir.create("online_files")
 
 sapply(links, function(mylink) { 
@@ -339,6 +347,8 @@ axis(1, at=1:nrow(trends), labels=rownames(trends))
 plot(trends$NUM_JOURNALS, xaxt = "n" , type="b" , main="Number of journals with affected articles",
  ylab="number of journals", xlab="month")
 axis(1, at=1:nrow(trends), labels=rownames(trends))
+
+unlink("online_files/")
 
 ```
 
