@@ -105,7 +105,7 @@ The dates and five-digit numbers indicate transmogrified gene names.
 
 ```{r,screen}
 
-#system("./gene_names.sh pmc.txt")
+system("./gene_names.sh pmc.txt")
 results <- readLines("results.txt")
 
 XLS <- results[grep("XLS",results,ignore.case=TRUE)]
@@ -334,6 +334,8 @@ trends <- as.data.frame(trends)
 rownames(trends) <- c("NUM_GENELIST_ARTICLES","NUM_ERROR_GENELIST_ARTICLES","ERROR_PROPORTION","NUM_JOURNALS")
 trends <- t(trends)
 trends <- as.data.frame(trends)
+
+CURRENT_RES <- c(NUM_GENELIST_ARTICLES,NUM_ERROR_GENELIST_ARTICLES,ERROR_PROPORTION,NUM_JOURNALS)
 
 trends <- rbind(trends,CURRENT_RES)
 paste(CURRENT_YEAR,CURRENT_MONTH,sep="-")
