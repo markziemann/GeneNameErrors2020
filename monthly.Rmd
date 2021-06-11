@@ -357,7 +357,7 @@ plot(trends$NUM_JOURNALS, xaxt = "n" , type="b" , main="Number of journals with 
  ylab="number of journals", xlab="month")
 axis(1, at=1:nrow(trends), labels=rownames(trends))
 
-unlink("online_files/")
+unlink("online_files/",recursive=TRUE)
 
 ```
 
