@@ -478,6 +478,7 @@ pmid <- sapply(res_all_years_lx,"[[",1)
 org <- sapply(res_all_years_lx,"[[",3)
 org_df <- data.frame(pmid,org)
 
+
 ath_pub <- length(unique(subset(org_df,org=="Athaliana")$pmid))
 ath_aff <- length(unique(subset(aff_xls[aff_xls$V2=="Athaliana",])$V1))
 ath_pc <- signif(ath_aff/ath_pub*100,3)
@@ -895,7 +896,7 @@ plot(x=ot_df[,1],y=ot_df[,2]/ot_df[,3]*100,ylab ="Proportion of publications aff
 grid()
 
 ## now make the pdf
-pdf("fig2.pdf",width=4,height=7) 
+pdf("fig3.pdf",width=4,height=7) 
 par(mfrow=c(3,1))
 
 ## Nature communication
@@ -1071,6 +1072,12 @@ plot(myjifs$JIF,myjifs$`Proportion of articles affected`,
   main="Articles with supplementary Excel gene lists")
 abline(mylm)
 
+pdf("fig2.pdf")
+plot(myjifs$JIF,myjifs$`Proportion of articles affected`,
+  xlab="JIF", ylab="Proportion of articles affected (%)",
+  main="Articles with supplementary Excel gene lists")
+abline(mylm)
+dev.off()
 ```
 
 ## Session information
