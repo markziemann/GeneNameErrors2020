@@ -3,7 +3,7 @@
 # This is the main script for scanning xls files for gene name errors.
 
 # testing
-#set -x
+set -x
 #PMC=PMC4574564 #XLS
 #PMC=PMC6364112 #ZIP
 
@@ -16,40 +16,35 @@ RES=results.txt
 
 PMC=$1
 
-curl https://www.ncbi.nlm.nih.gov/pmc/articles/${PMC}/ > tmp.html
+#curl https://www.ncbi.nlm.nih.gov/pmc/articles/${PMC}/ > tmp.html
+pygetpapers -q $PMC -s -k1 -o PMC_DL --loglevel debug -x --logfile log.txt
 
-cat tmp.html | grep -i xls | tr '"' "\n" | egrep -i '(xls$|xlsx$)' | sort -u > tmp.txt
+SUPP_DIR=PMC_DL/${PMC}/supplementaryfiles/
+
+find $SUPP_DIR | egrep -i '(xls$|xlsx$)' | sort -u > tmp.txt
 
 COUNT=$(cat tmp.txt | wc -l)
 
-for XLS in $(cat tmp.txt ) ; do
+for XLS in $(find ${SUPP_DIR} | egrep -i '(xls$|xlsx$)' )    ; do
 
   echo $PMC $XLS | tee -a $RES
 
   ERR_CNT=0
 
-  SFX=$(echo $XLS | rev | cut -d '.' -f1 | rev)
-
-  MYFILE=tmp.$SFX
-
-  curl -o $MYFILE  "https://www.ncbi.nlm.nih.gov/$XLS"
-
-  sleep 2
-
-  if [ $(file $MYFILE | grep -ic excel ) -gt 0 ] ; then
+  if [ $(file $XLS | grep -ic excel ) -gt 0 ] ; then
     # this is more efficient than ssconvert but need to be able to catch
     # 5 digit numbers (1927 to 2173)
-    Rscript read_xls.R $MYFILE 2> /dev/null
+    Rscript read_xls.R $XLS 2> /dev/null
 
   else
     # ssconvert tends to hang on files with complex formatting
     # which is why I favour the R script
     timeout 2m ssconvert -S --export-type Gnumeric_stf:stf_assistant -O 'separator="'$'\t''"' \
-      $MYFILE $MYFILE.txt 2> /dev/null
+      $XLS $XLS.txt 2> /dev/null
   fi
 
   #count the columns in each sheet
-  for SHEET in $MYFILE.txt* ; do
+  for SHEET in $XLS.txt* ; do
     TMP=$SHEET.tmp
     NF=$(head $SHEET | awk '{print NF}' | numaverage -M)
 
@@ -85,19 +80,13 @@ for XLS in $(cat tmp.txt ) ; do
   done
 done
 
-cat tmp.html | grep -i xls | tr '"' "\n" | egrep -i '\.zip$' | sort -u > tmp.txt
+find $SUPP_DIR | egrep -i '(.zip$)' | sort -u > tmp.txt
 
 COUNT=$(cat tmp.txt | wc -l)
 
-for ZIP in $(cat tmp.txt ) ; do
+for ZIP in $(find $SUPP_DIR | egrep -i '(.zip$)' ) ; do
 
-  MYZIP=zip/tmp.zip
-
-  [ -d "zip" ] || mkdir "zip"
-
-  curl -o $MYZIP "https://www.ncbi.nlm.nih.gov/$ZIP"
-
-  unzip -d zip $MYZIP
+  unzip -d zip $ZIP
 
   detox -r zip/
 
@@ -106,9 +95,6 @@ for ZIP in $(cat tmp.txt ) ; do
     echo $PMC $XLS | tee -a $RES
 
     ERR_CNT=0
-
-    #timeout 2m ssconvert -S --export-type Gnumeric_stf:stf_assistant -O 'separator="'$'\t''"' \
-    #  $XLS $XLS.txt 2> /dev/null
 
     if [ $(file $XLS | grep -ic excel ) -gt 0 ] ; then
       Rscript read_xls.R $XLS 2> /dev/null
@@ -154,12 +140,12 @@ for ZIP in $(cat tmp.txt ) ; do
   done
   rm -rf zip/*
 done
-rm tmp*
+rm -rf PMC_DL/*
 sleep 10
 }
 export -f screen_pmc
 
-rm tmp*
+rm -rf PMC_DL
 >results.txt
 
 # testing only
@@ -169,7 +155,6 @@ rm tmp*
 
 >begin
 PMC_FILE=$1
-screen_pmc $PMC
 for PMC in $(cat $PMC_FILE ) ; do
   screen_pmc $PMC
 done

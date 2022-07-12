@@ -40,7 +40,7 @@ Start with figuring out the date to search PubMed Central.
 
 ```{r,month}
 
-DATE="2021/3"
+DATE="2022/5"
 
 ```
 
@@ -66,6 +66,9 @@ writeLines(pmc,con="pmc.txt")
 ## Run the screen
 
 Now run the bash script. 
+As PMC has changed and restricts scraping journal articles, it is best to use the dedicated
+utility called pygetpapers for the download.
+
 Note that false positives can occur (~1.5%) and these results have not been verified by a human.
 
 Here are some definitions:
