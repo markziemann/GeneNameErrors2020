@@ -70,7 +70,8 @@ QUERY ='((genom*[Abstract]))'
 
 ESEARCH_RES <- esearch(term=QUERY, db = "pmc", rettype = "uilist", retmode = "xml", retstart = 0, 
   retmax = 5000000, usehistory = TRUE, webenv = NULL, querykey = NULL, sort = NULL, field = NULL, 
-  datetype = NULL, reldate = NULL, mindate = DATE, maxdate = DATE)
+  datetype = NULL, reldate = NULL, 
+  mindate = paste(DATE,"/1",sep="") , maxdate = paste(DATE,"/31",sep=""))
 
 pmc <- efetch(ESEARCH_RES,retmode="text",rettype="uilist",outfile="pmcids.txt")
 pmc <- read.table(pmc)
