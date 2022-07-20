@@ -1,10 +1,14 @@
 ---
-title: "Gene Name Error Monthly Dashboard"
+title: "Gene Name Error Monthly Report"
 author: "Mark Ziemann"
 date: "`r Sys.Date()`"
 output:
   html_document:
     toc: true
+    toc_float: true
+    code_folding: hide
+    fig_width: 5
+    fig_height: 5
 theme: cosmo
 ---
 
@@ -30,6 +34,7 @@ library("jsonlite")
 library("xml2")
 library("reutils")
 library("readxl")
+library("RCurl")
 
 ```
 
@@ -276,21 +281,22 @@ To plot the trend over the past 6-12 months.
 
 ```{r,trend1,fig.height=8,fig.width=8}
 
-url <- "http://ziemann-lab.net/public/gene_name_errors/"
+url <- "https://ziemann-lab.net/public/gene_name_errors/"
 doc <- htmlParse(url)
 links <- xpathSApply(doc, "//a/@href")
 links <- links[grep("html",links)]
 
-links
+listing <- htmlParse( getURL(url, ftp.use.epsv = FALSE, dirlistonly = TRUE) )
+listing <- xpathSApply(listing, "//a/@href")
+listing <- listing[grep("html",listing)]
 
 unlink("online_files/",recursive=TRUE)
 
 dir.create("online_files")
 
-sapply(links, function(mylink) { 
+sapply(listing, function(mylink) { 
   download.file(paste(url,mylink,sep=""),destfile=paste("online_files/",mylink,sep=""))  
 } )
-
 
 myfilelist <- list.files("online_files/",full.names=TRUE)
 
