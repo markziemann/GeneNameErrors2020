@@ -86,8 +86,8 @@ COUNT=$(cat tmp.txt | wc -l)
 
 for ZIP in $(find $SUPP_DIR | egrep -i '(.zip$)' ) ; do
 
-  unzip -d zip $ZIP
-
+  unzip -o -d zip $ZIP
+  chmod -R 775 $ZIP
   detox -r zip/
 
   for XLS in $(find zip | egrep -i '(.xls$|.xlsx$)' ); do
