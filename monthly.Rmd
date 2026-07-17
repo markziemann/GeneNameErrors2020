@@ -66,7 +66,7 @@ Let's see how many PMC IDs we have in the past month.
 
 ```{r,pmc}
 
-QUERY ='((genom*[Abstract]))'
+QUERY ='((genom*[Title/Abstract]))'
 
 ESEARCH_RES <- esearch(term=QUERY, db = "pmc", rettype = "uilist", retmode = "xml", retstart = 0, 
   retmax = 5000000, usehistory = TRUE, webenv = NULL, querykey = NULL, sort = NULL, field = NULL, 
